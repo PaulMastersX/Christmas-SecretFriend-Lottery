@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Administrador - Intercambio de Regalos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .admin-animation {
+            animation: adminPulse 3s infinite;
+        }
+        
+        @keyframes adminPulse {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .success-animation {
+            animation: successBounce 0.6s ease-in-out;
+        }
+        
+        @keyframes successBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .shake-animation {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .admin-card {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .participant-card {
+            transition: all 0.3s ease;
+        }
+        
+        .participant-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .draw-animation {
+            animation: drawSpin 2s ease-in-out;
+        }
+        
+        @keyframes drawSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .draw-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .draw-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .draw-card.active {
+            border: 3px solid #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full bg-gradient-to-br from-blue-50 to-purple-50 font-sans">
+  <div class="min-h-full flex flex-col"><!-- Admin Login Section -->
+   <div id="admin-login-section" class="min-h-full flex items-center justify-center px-6 py-12">
+    <div class="max-w-md w-full"><!-- Header -->
+     <div class="text-center mb-8">
+      <div class="admin-animation inline-block text-8xl mb-4">
+       🔧
+      </div>
+      <h1 id="portal-title" class="text-4xl font-bold text-gray-900 mb-2">Portal Administrador</h1>
+      <h2 id="event-name" class="text-xl text-gray-600 mb-4">Intercambio Navideño 2025</h2><!-- Decorative elements -->
+      <div class="flex justify-center items-center gap-2 mb-6"><span class="text-2xl animate-pulse">⚙️</span> <span class="text-lg">・</span> <span class="text-2xl animate-bounce">🎯</span> <span class="text-lg">・</span> <span class="text-2xl animate-pulse">📊</span>
+      </div>
+     </div><!-- Admin Login Card -->
+     <div class="admin-card rounded-2xl p-8 text-white shadow-2xl">
+      <div class="text-center mb-6">
+       <div class="text-5xl mb-4">
+        🛡️
+       </div>
+       <h3 class="text-2xl font-bold mb-2">Acceso Administrativo</h3>
+       <p class="text-sm opacity-90">Solo para organizadores autorizados</p>
+      </div>
+      <form id="admin-login-form" class="space-y-4">
+       <div><label for="admin-username" class="block text-sm font-medium mb-2 opacity-90">Usuario Administrador</label> <input type="text" id="admin-username" name="admin-username" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-white" placeholder="admin">
+       </div>
+       <div><label for="admin-password" class="block text-sm font-medium mb-2 opacity-90">Contraseña Administrador</label> <input type="password" id="admin-password" name="admin-password" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-white" placeholder="Tu contraseña de admin">
+       </div><button type="submit" id="admin-login-btn" class="w-full bg-white text-blue-600 font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg"> <span class="flex items-center justify-center gap-2"> <span class="text-xl">🔐</span> <span>Acceder al Panel Admin</span> </span> </button>
+      </form><!-- Admin Error Message -->
+      <div id="admin-error-message" class="mt-4 p-3 bg-red-500 bg-opacity-20 border border-red-300 border-opacity-30 rounded-lg text-center text-sm hidden"><span class="mr-2">❌</span> <span>Credenciales de administrador incorrectas.</span>
+      </div>
+     </div><!-- Admin Credentials Info -->
+     <div class="mt-8 bg-white rounded-lg p-6 shadow-md">
+      <div class="text-center">
+       <div class="text-3xl mb-3">
+        🔑
+       </div>
+       <h4 class="font-bold text-gray-800 mb-2">Credenciales de Administrador</h4>
+       <div class="bg-gray-50 rounded-lg p-4 mb-3">
+        <p class="text-sm text-gray-700 mb-1"><strong>Usuario:</strong> admin</p>
+        <p class="text-sm text-gray-700"><strong>Contraseña:</strong> Admin123!</p>
+       </div>
+       <p class="text-xs text-gray-500">Solo para organizadores del evento</p>
+      </div>
+     </div><!-- Portal Navigation -->
+     <div class="mt-6 text-center"><a href="#" onclick="switchToParticipantPortal()" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"> <span class="text-lg">👤</span> <span class="text-sm font-medium">Ir al Portal Participantes</span> </a>
+     </div>
+    </div>
+   </div><!-- Admin Dashboard -->
+   <div id="admin-dashboard" class="hidden min-h-full flex flex-col"><!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
+     <div class="max-w-6xl mx-auto px-6 py-6">
+      <div class="flex items-center justify-between">
+       <div class="flex items-center">
+        <div class="text-4xl mr-4 admin-animation">
+         🔧
+        </div>
+        <div>
+         <h1 class="text-3xl font-bold">Panel de Administración</h1>
+         <p id="admin-welcome" class="text-lg opacity-90">¡Bienvenido al Panel de Administración!</p>
+        </div>
+       </div>
+       <div class="flex items-center gap-4">
+        <div class="text-right">
+         <p class="text-sm opacity-75">Administrador</p>
+         <p class="font-semibold">Sistema Admin</p>
+        </div><button id="admin-logout-btn" class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2 text-sm text-white font-semibold"> <span>🚪</span> <span>Cerrar Sesión</span> </span> </button>
+       </div>
+      </div><!-- Portal Navigation -->
+      <div class="mt-4 pt-4 border-t border-white border-opacity-30">
+       <div class="flex justify-center items-center gap-4">
+        <div class="bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl px-4 py-2 border-2 border-white shadow-lg">
+         <div class="flex items-center gap-2 text-sm text-white font-semibold"><span class="text-lg">🔧</span> <span class="font-bold">Portal Administrador</span> <span class="text-xs bg-white text-green-700 px-2 py-0.5 rounded-full">Actual</span>
+         </div>
+        </div>
+        <div class="text-white text-2xl">
+         ✨
+        </div><a href="#" onclick="switchToParticipantPortal()" class="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105">
+         <div class="flex items-center gap-2 text-sm text-white font-semibold"><span class="text-lg">👤</span> <span class="font-bold">Portal Participantes</span>
+         </div></a>
+       </div>
+      </div>
+     </div>
+    </header><!-- Main Content -->
+    <main class="flex-1 max-w-6xl mx-auto px-6 py-8 w-full"><!-- Draw Selector Section -->
+     <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 mb-8 border-2 border-purple-200">
+      <div class="flex items-center justify-between mb-6">
+       <div class="flex items-center"><span class="text-3xl mr-3">🎯</span>
+        <div>
+         <h3 class="text-2xl font-bold text-gray-800">Gestión de Sorteos</h3>
+         <p class="text-sm text-gray-600">Administra múltiples grupos de intercambio</p>
+        </div>
+       </div><button id="create-new-draw-btn" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center gap-2 shadow-lg"> <span class="text-xl">➕</span> <span>Crear Nuevo Sorteo</span> </button>
+      </div><!-- Current Draw Info -->
+      <div id="current-draw-info" class="bg-white rounded-lg p-4 mb-4 border-l-4 border-green-500">
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="text-xs text-gray-500 mb-1">Sorteo Activo:</p>
+         <p id="current-draw-name" class="text-lg font-bold text-gray-800">Sin sorteo seleccionado</p>
+         <p id="current-draw-date" class="text-xs text-gray-500"></p>
+        </div><button id="view-all-draws-btn" class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"> <span>📋</span> <span>Ver Todos los Sorteos</span> </button>
+       </div>
+      </div>
+     </div><!-- Stats Cards -->
+     <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-md p-6 relative overflow-hidden">
+       <div class="absolute top-3 right-6 text-3xl opacity-20">
+        👥
+       </div>
+       <div class="flex items-center"><span class="text-3xl mr-4">👥</span>
+        <div>
+         <h3 class="text-2xl font-bold text-gray-800" id="total-participants">0</h3>
+         <p class="text-sm text-gray-600">Participantes en Sorteo Actual</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-lg shadow-md p-6 relative overflow-hidden">
+       <div class="absolute top-3 right-6 text-3xl opacity-20">
+        🎯
+       </div>
+       <div class="flex items-center"><span class="text-3xl mr-4">🎯</span>
+        <div>
+         <h3 class="text-2xl font-bold text-gray-800" id="total-assignments">0</h3>
+         <p class="text-sm text-gray-600">Asignaciones Realizadas</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-lg shadow-md p-6 relative overflow-hidden">
+       <div class="absolute top-3 right-6 text-3xl opacity-20">
+        🎁
+       </div>
+       <div class="flex items-center"><span class="text-3xl mr-4">🎁</span>
+        <div>
+         <h3 class="text-2xl font-bold text-gray-800" id="draw-status">Pendiente</h3>
+         <p class="text-sm text-gray-600">Estado del Sorteo</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Add Participant Section -->
+     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6"><span class="text-3xl mr-3">➕</span>
+       <h3 id="add-participant-text" class="text-2xl font-bold text-gray-800">Agregar Nuevo Participante</h3>
+      </div>
+      <form id="add-participant-form" class="space-y-4">
+       <div class="grid md:grid-cols-2 gap-4">
+        <div><label for="participant-name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo *</label> <input type="text" id="participant-name" name="participant-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ej: María García">
+        </div>
+        <div><label for="participant-phone" class="block text-sm font-medium text-gray-700 mb-2">Celular *</label> <input type="tel" id="participant-phone" name="participant-phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ej: +51 999 999 999">
+        </div>
+        <div><label for="participant-email" class="block text-sm font-medium text-gray-700 mb-2">Email (Opcional)</label> <input type="email" id="participant-email" name="participant-email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="maria@email.com">
+        </div>
+       </div><!-- Custom Credentials Section -->
+       <div class="border-t pt-4">
+        <div class="flex items-center mb-4"><input type="checkbox" id="custom-credentials-checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"> <label for="custom-credentials-checkbox" class="ml-2 text-sm font-medium text-gray-700"> Asignar credenciales personalizadas (Opcional) </label>
+        </div>
+        <div id="custom-credentials-fields" class="grid md:grid-cols-2 gap-4 hidden">
+         <div><label for="participant-username" class="block text-sm font-medium text-gray-700 mb-2">Usuario de Acceso</label> <input type="text" id="participant-username" name="participant-username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="maria123">
+         </div>
+         <div><label for="participant-password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña Temporal</label> <input type="text" id="participant-password" name="participant-password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Abc12345">
+         </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">💡 Si no asignas credenciales, se generarán automáticamente basadas en el nombre del participante.</p>
+       </div>
+       <div><button type="submit" id="add-participant-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"> <span class="text-lg">👤</span> <span>Agregar Participante</span>
+         <div id="add-loading" class="loading-spinner w-4 h-4 border-2 border-white border-t-transparent rounded-full hidden ml-2"></div></button>
+       </div>
+      </form>
+     </div><!-- Restrictions Section -->
+     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6"><span class="text-3xl mr-3">🚫</span>
+       <h3 class="text-2xl font-bold text-gray-800">Restricciones de Sorteo</h3>
+      </div>
+      <p class="text-gray-600 mb-4">Agrega restricciones para evitar que ciertos participantes se regalen entre sí (ej: hermanos, esposos, parejas).</p>
+      <form id="add-restriction-form" class="space-y-4">
+       <div class="grid md:grid-cols-2 gap-4">
+        <div><label for="person1-select" class="block text-sm font-medium text-gray-700 mb-2">Primera Persona</label> <select id="person1-select" name="person1-select" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">-- Selecciona --</option> </select>
+        </div>
+        <div><label for="person2-select" class="block text-sm font-medium text-gray-700 mb-2">Segunda Persona</label> <select id="person2-select" name="person2-select" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">-- Selecciona --</option> </select>
+        </div>
+       </div>
+       <div><button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"> <span class="text-lg">➕</span> <span>Agregar Restricción</span> </button>
+       </div>
+      </form><!-- Restrictions List -->
+      <div id="restrictions-list" class="mt-6 space-y-2">
+       <div class="text-center py-6 text-gray-500 text-sm">
+        <p>No hay restricciones configuradas</p>
+       </div>
+      </div>
+     </div><!-- Draw Section -->
+     <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-8 border border-green-200">
+      <div class="text-center">
+       <div class="text-6xl mb-4" id="draw-emoji">
+        🎲
+       </div>
+       <h3 class="text-2xl font-bold text-gray-800 mb-4">Sorteo Automático</h3>
+       <p class="text-gray-600 mb-6">Realiza el sorteo automático para asignar a cada participante la persona a quien debe regalar (asignación 1 a 1).</p><button id="perform-draw-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center gap-3 mx-auto"> <span class="text-2xl">🎯</span> <span id="draw-button-text">Realizar Sorteo Automático</span>
+        <div id="draw-loading" class="loading-spinner w-5 h-5 border-2 border-white border-t-transparent rounded-full hidden ml-2"></div></button>
+       <div id="draw-requirements" class="mt-4 text-sm text-gray-500">
+        <p>⚠️ Se necesitan al menos 2 participantes para realizar el sorteo</p>
+       </div>
+      </div>
+     </div><!-- Participants List -->
+     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex items-center justify-between mb-6">
+       <div class="flex items-center"><span class="text-3xl mr-3">📋</span>
+        <h3 class="text-2xl font-bold text-gray-800">Lista de Participantes</h3>
+       </div><button id="generate-credentials-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"> <span>📄</span> <span>Generar Credenciales</span> </button>
+      </div>
+      <div id="participants-list" class="space-y-4">
+       <div class="text-center py-12 text-gray-500">
+        <div class="text-6xl mb-4">
+         👥
+        </div>
+        <p class="text-lg">No hay participantes registrados aún</p>
+        <p class="text-sm">Agrega el primer participante usando el formulario de arriba</p>
+       </div>
+      </div>
+     </div><!-- Personal Invite Section -->
+     <div id="personal-invite-section" class="bg-white rounded-lg shadow-md p-6">
+      <div class="flex items-center mb-6"><span class="text-3xl mr-3">📧</span>
+       <h3 class="text-2xl font-bold text-gray-800">Invitación Personal por WhatsApp</h3>
+      </div>
+      <div class="mb-4"><label for="participant-select" class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Participante:</label> <select id="participant-select" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">-- Selecciona un participante --</option> </select>
+      </div><button id="generate-invite-btn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2 mb-4"> <span>📱</span> <span>Generar Mensaje de Invitación</span> </button>
+      <div id="invite-message-container" class="hidden"><label class="block text-sm font-medium text-gray-700 mb-2">Mensaje para copiar y enviar por WhatsApp:</label> <textarea id="invite-message-text" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-800 font-mono text-sm resize-none" rows="8"></textarea> <button id="copy-invite-btn" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"> <span>📋</span> <span>Copiar Mensaje</span> </button>
+      </div>
+     </div>
+    </main><!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+     <div class="max-w-6xl mx-auto px-6 text-center">
+      <div class="flex justify-center items-center gap-2 mb-2"><span class="animate-pulse">🔧</span> <span class="animate-bounce">⚙️</span> <span class="animate-pulse">📊</span> <span class="animate-bounce">🎯</span> <span class="animate-pulse">🎁</span>
+      </div>
+      <p class="text-gray-300">Panel de Administración - Intercambio de Regalos 2025</p>
+      <p class="text-xs text-gray-400 mt-1">Sistema Seguro de Gestión</p>
+     </div>
+    </footer>
+   </div>
+  </div><!-- Create New Draw Modal -->
+  <div id="create-draw-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+   <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+    <div class="text-center mb-6">
+     <div class="text-5xl mb-4">
+      🎯
+     </div>
+     <h3 class="text-2xl font-bold text-gray-800 mb-2">Crear Nuevo Sorteo</h3>
+     <p class="text-gray-600">Ingresa un nombre para identificar este grupo</p>
+    </div>
+    <form id="create-draw-form" class="space-y-4">
+     <div><label for="draw-name" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Sorteo *</label> <input type="text" id="draw-name" name="draw-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Ej: Familia García 2025">
+     </div>
+     <div class="flex gap-3"><button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"> Crear Sorteo </button> <button type="button" onclick="closeCreateDrawModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg transition-colors"> Cancelar </button>
+     </div>
+    </form>
+   </div>
+  </div><!-- View All Draws Modal -->
+  <div id="view-draws-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+   <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-96 overflow-y-auto shadow-2xl">
+    <div class="text-center mb-6">
+     <div class="text-5xl mb-4">
+      📋
+     </div>
+     <h3 class="text-2xl font-bold text-gray-800 mb-2">Historial de Sorteos</h3>
+     <p class="text-gray-600">Selecciona un sorteo para gestionarlo</p>
+    </div>
+    <div id="draws-list" class="space-y-3 mb-6"><!-- Draws will be populated here -->
+    </div>
+    <div class="text-center"><button onclick="closeViewDrawsModal()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors"> Cerrar </button>
+    </div>
+   </div>
+  </div><!-- Credentials Modal -->
+  <div id="credentials-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+   <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-96 overflow-y-auto shadow-2xl">
+    <div class="text-center mb-6">
+     <div class="text-5xl mb-4">
+      📄
+     </div>
+     <h3 class="text-2xl font-bold text-gray-800 mb-2">Credenciales de Acceso</h3>
+     <p class="text-gray-600">Comparte estas credenciales con cada participante</p>
+    </div>
+    <div id="credentials-content" class="space-y-4 mb-6"><!-- Credentials will be populated here -->
+    </div>
+    <div class="text-center"><button onclick="closeCredentialsModal()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors"> Cerrar </button>
+    </div>
+   </div>
+  </div>
+  <script>
+        // Configuration
+        const defaultConfig = {
+            portal_title: "Portal Administrador - Intercambio de Regalos",
+            event_name: "Intercambio Navideño 2025",
+            admin_welcome: "¡Bienvenido al Panel de Administración!",
+            add_participant_text: "Agregar Nuevo Participante",
+            draw_button_text: "Realizar Sorteo Automático",
+            background_color: "#eff6ff",
+            primary_color: "#2563eb",
+            secondary_color: "#7c3aed",
+            text_color: "#374151",
+            surface_color: "#ffffff"
+        };
+
+        // Admin credentials
+        const adminCredentials = {
+            username: "admin",
+            password: "Admin123!"
+        };
+
+        let allRecords = [];
+        let participants = [];
+        let draws = [];
+        let currentDrawId = null;
+        let isLoggedIn = false;
+        let restrictions = [];
+
+        // Data SDK Handler
+        const dataHandler = {
+            onDataChanged(data) {
+                allRecords = data || [];
+                
+                // Separate participants and draws
+                participants = allRecords.filter(r => r.recordType === 'participant' && (!currentDrawId || r.drawId === currentDrawId));
+                draws = allRecords.filter(r => r.recordType === 'draw');
+                
+                updateDrawsList();
+                updateCurrentDrawInfo();
+                updateParticipantsList();
+                updateStats();
+                updateParticipantSelect();
+            }
+        };
+
+        // Custom credentials checkbox handler
+        document.getElementById('custom-credentials-checkbox').addEventListener('change', (e) => {
+            const fieldsContainer = document.getElementById('custom-credentials-fields');
+            if (e.target.checked) {
+                fieldsContainer.classList.remove('hidden');
+            } else {
+                fieldsContainer.classList.add('hidden');
+                document.getElementById('participant-username').value = '';
+                document.getElementById('participant-password').value = '';
+            }
+        });
+
+        // Portal navigation
+        function switchToParticipantPortal() {
+            window.open('TU_URL_PORTAL_PARTICIPANTES_AQUI', '_blank');
+        }
+
+        // Admin login handler
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const username = formData.get('admin-username').trim();
+            const password = formData.get('admin-password').trim();
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                isLoggedIn = true;
+                showAdminDashboard();
+                showToast("¡Acceso administrativo exitoso!", "success");
+            } else {
+                showAdminLoginError();
+                showToast("Credenciales de administrador incorrectas.", "error");
+            }
+        });
+
+        // Admin logout handler
+        document.getElementById('admin-logout-btn').addEventListener('click', () => {
+            isLoggedIn = false;
+            showAdminLogin();
+            showToast("Sesión administrativa cerrada.", "info");
+        });
+
+        // Create new draw button
+        document.getElementById('create-new-draw-btn').addEventListener('click', () => {
+            showCreateDrawModal();
+        });
+
+        // View all draws button
+        document.getElementById('view-all-draws-btn').addEventListener('click', () => {
+            showViewDrawsModal();
+        });
+
+        // Create draw form handler
+        document.getElementById('create-draw-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (allRecords.length >= 999) {
+                showToast("Límite máximo de 999 registros alcanzado.", "error");
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const drawName = formData.get('draw-name').trim();
+            
+            if (!drawName) {
+                showToast("Debes ingresar un nombre para el sorteo.", "error");
+                return;
+            }
+            
+            const newDraw = {
+                id: generateId(),
+                name: drawName,
+                createdAt: new Date().toISOString(),
+                recordType: 'draw',
+                drawId: '',
+                email: '',
+                phone: '',
+                username: '',
+                password: '',
+                assignedTo: '',
+                assignedToEmail: ''
+            };
+            
+            const result = await window.dataSdk.create(newDraw);
+            
+            if (result.isOk) {
+                currentDrawId = newDraw.id;
+                restrictions = [];
+                closeCreateDrawModal();
+                document.getElementById('create-draw-form').reset();
+                showToast(`Sorteo "${drawName}" creado exitosamente.`, "success");
+            } else {
+                showToast("Error al crear sorteo. Intenta nuevamente.", "error");
+            }
+        });
+
+        // Add participant handler
+        document.getElementById('add-participant-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentDrawId) {
+                showToast("Debes crear o seleccionar un sorteo primero.", "error");
+                return;
+            }
+            
+            if (allRecords.length >= 999) {
+                showToast("Límite máximo de 999 registros alcanzado.", "error");
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const name = formData.get('participant-name').trim();
+            const phone = formData.get('participant-phone').trim();
+            const email = formData.get('participant-email').trim();
+            const customCredentials = document.getElementById('custom-credentials-checkbox').checked;
+            
+            let username, password;
+            
+            if (customCredentials) {
+                username = formData.get('participant-username').trim();
+                password = formData.get('participant-password').trim();
+                
+                if (!username || !password) {
+                    showToast("Debes ingresar usuario y contraseña si activas credenciales personalizadas.", "error");
+                    return;
+                }
+            } else {
+                username = generateUsername(name);
+                password = generatePassword();
+            }
+            
+            const existingUser = participants.find(p => 
+                p.username === username || (email && p.email === email)
+            );
+            
+            if (existingUser) {
+                showToast("Ya existe un participante con ese usuario o email en este sorteo.", "error");
+                return;
+            }
+            
+            const addBtn = document.getElementById('add-participant-btn');
+            const loading = document.getElementById('add-loading');
+            addBtn.disabled = true;
+            loading.classList.remove('hidden');
+            
+            const participant = {
+                id: generateId(),
+                name,
+                phone,
+                email: email || "",
+                username,
+                password,
+                assignedTo: "",
+                assignedToEmail: "",
+                drawId: currentDrawId,
+                recordType: 'participant',
+                createdAt: new Date().toISOString()
+            };
+            
+            const result = await window.dataSdk.create(participant);
+            
+            addBtn.disabled = false;
+            loading.classList.add('hidden');
+            
+            if (result.isOk) {
+                document.getElementById('add-participant-form').reset();
+                document.getElementById('custom-credentials-checkbox').checked = false;
+                document.getElementById('custom-credentials-fields').classList.add('hidden');
+                showToast(`Participante ${name} agregado exitosamente.`, "success");
+            } else {
+                showToast("Error al agregar participante. Intenta nuevamente.", "error");
+            }
+        });
+
+        // Perform draw handler
+        document.getElementById('perform-draw-btn').addEventListener('click', async () => {
+            if (!currentDrawId) {
+                showToast("Debes crear o seleccionar un sorteo primero.", "error");
+                return;
+            }
+            
+            if (participants.length < 2) {
+                showToast("Se necesitan al menos 2 participantes para realizar el sorteo.", "error");
+                return;
+            }
+            
+            const drawBtn = document.getElementById('perform-draw-btn');
+            const loading = document.getElementById('draw-loading');
+            const emoji = document.getElementById('draw-emoji');
+            
+            drawBtn.disabled = true;
+            loading.classList.remove('hidden');
+            emoji.classList.add('draw-animation');
+            
+            const assignment = performSecretSantaDraw(participants, restrictions);
+            
+            if (!assignment) {
+                drawBtn.disabled = false;
+                loading.classList.add('hidden');
+                emoji.classList.remove('draw-animation');
+                showToast("No se pudo realizar el sorteo con las restricciones actuales. Intenta eliminar algunas restricciones.", "error");
+                return;
+            }
+            
+            for (const [giverId, receiverId] of Object.entries(assignment)) {
+                const giver = participants.find(p => p.id === giverId);
+                const receiver = participants.find(p => p.id === receiverId);
+                
+                if (giver && receiver) {
+                    const updatedParticipant = {
+                        ...giver,
+                        assignedTo: receiver.name,
+                        assignedToEmail: receiver.email
+                    };
+                    
+                    await window.dataSdk.update(updatedParticipant);
+                }
+            }
+            
+            setTimeout(() => {
+                drawBtn.disabled = false;
+                loading.classList.add('hidden');
+                emoji.classList.remove('draw-animation');
+                showToast("¡Sorteo realizado exitosamente! Todas las asignaciones han sido completadas (1 a 1).", "success");
+            }, 2000);
+        });
+
+        // Generate credentials handler
+        document.getElementById('generate-credentials-btn').addEventListener('click', () => {
+            if (participants.length === 0) {
+                showToast("No hay participantes para generar credenciales.", "error");
+                return;
+            }
+            
+            showCredentialsModal();
+        });
+
+        // Generate invite handler
+        document.getElementById('generate-invite-btn').addEventListener('click', () => {
+            const selectElement = document.getElementById('participant-select');
+            const selectedId = selectElement.value;
+            
+            if (!selectedId) {
+                showToast("Por favor selecciona un participante.", "error");
+                return;
+            }
+            
+            const participant = participants.find(p => p.id === selectedId);
+            if (!participant) return;
+            
+            const inviteMessage = generateInviteMessage(participant);
+            
+            document.getElementById('invite-message-text').value = inviteMessage;
+            document.getElementById('invite-message-container').classList.remove('hidden');
+            
+            showToast("Mensaje de invitación generado. ¡Cópialo y envíalo por WhatsApp!", "success");
+        });
+
+        // Copy invite handler
+        document.getElementById('copy-invite-btn').addEventListener('click', () => {
+            const textarea = document.getElementById('invite-message-text');
+            textarea.select();
+            document.execCommand('copy');
+            showToast("¡Mensaje copiado al portapapeles!", "success");
+        });
+
+        // Add restriction handler
+        document.getElementById('add-restriction-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const person1Id = formData.get('person1-select');
+            const person2Id = formData.get('person2-select');
+            
+            if (!person1Id || !person2Id) {
+                showToast("Debes seleccionar ambas personas.", "error");
+                return;
+            }
+            
+            if (person1Id === person2Id) {
+                showToast("No puedes crear una restricción de una persona consigo misma.", "error");
+                return;
+            }
+            
+            const exists = restrictions.some(r => 
+                (r.person1Id === person1Id && r.person2Id === person2Id) ||
+                (r.person1Id === person2Id && r.person2Id === person1Id)
+            );
+            
+            if (exists) {
+                showToast("Esta restricción ya existe.", "error");
+                return;
+            }
+            
+            const person1 = participants.find(p => p.id === person1Id);
+            const person2 = participants.find(p => p.id === person2Id);
+            
+            restrictions.push({
+                id: generateId(),
+                person1Id,
+                person2Id,
+                person1Name: person1.name,
+                person2Name: person2.name
+            });
+            
+            updateRestrictionsList();
+            e.target.reset();
+            showToast("Restricción agregada exitosamente.", "success");
+        });
+
+        // Switch to draw
+        function switchToDraw(drawId) {
+            currentDrawId = drawId;
+            restrictions = [];
+            
+            participants = allRecords.filter(r => r.recordType === 'participant' && r.drawId === currentDrawId);
+            
+            updateCurrentDrawInfo();
+            updateParticipantsList();
+            updateStats();
+            updateParticipantSelect();
+            
+            closeViewDrawsModal();
+            
+            const draw = draws.find(d => d.id === drawId);
+            showToast(`Sorteo "${draw.name}" seleccionado.`, "success");
+        }
+
+        // Delete draw
+        async function deleteDraw(drawId) {
+            const draw = allRecords.find(r => r.id === drawId);
+            if (!draw) return;
+            
+            const drawParticipants = allRecords.filter(r => r.recordType === 'participant' && r.drawId === drawId);
+            
+            for (const participant of drawParticipants) {
+                await window.dataSdk.delete(participant);
+            }
+            
+            const result = await window.dataSdk.delete(draw);
+            
+            if (result.isOk) {
+                if (currentDrawId === drawId) {
+                    currentDrawId = null;
+                    restrictions = [];
+                }
+                showToast(`Sorteo "${draw.name}" eliminado.`, "success");
+            } else {
+                showToast("Error al eliminar sorteo.", "error");
+            }
+        }
+
+        // Update draws list
+        function updateDrawsList() {
+            // Draws list is updated in the modal
+        }
+
+        // Update current draw info
+        function updateCurrentDrawInfo() {
+            const nameElement = document.getElementById('current-draw-name');
+            const dateElement = document.getElementById('current-draw-date');
+            
+            if (currentDrawId) {
+                const draw = draws.find(d => d.id === currentDrawId);
+                if (draw) {
+                    nameElement.textContent = draw.name;
+                    const date = new Date(draw.createdAt);
+                    dateElement.textContent = `Creado: ${date.toLocaleDateString('es-ES')} ${date.toLocaleTimeString('es-ES')}`;
+                }
+            } else {
+                nameElement.textContent = "Sin sorteo seleccionado";
+                dateElement.textContent = "";
+            }
+        }
+
+        // Show create draw modal
+        function showCreateDrawModal() {
+            const modal = document.getElementById('create-draw-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Close create draw modal
+        function closeCreateDrawModal() {
+            const modal = document.getElementById('create-draw-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Show view draws modal
+        function showViewDrawsModal() {
+            const modal = document.getElementById('view-draws-modal');
+            const listContainer = document.getElementById('draws-list');
+            
+            if (draws.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <div class="text-6xl mb-4">🎯</div>
+                        <p class="text-lg">No hay sorteos creados aún</p>
+                        <p class="text-sm">Crea tu primer sorteo para comenzar</p>
+                    </div>
+                `;
+            } else {
+                listContainer.innerHTML = draws.map(draw => {
+                    const drawParticipants = allRecords.filter(r => r.recordType === 'participant' && r.drawId === draw.id);
+                    const assignedCount = drawParticipants.filter(p => p.assignedTo).length;
+                    const isActive = draw.id === currentDrawId;
+                    const date = new Date(draw.createdAt);
+                    
+                    return `
+                        <div class="draw-card ${isActive ? 'active' : ''} bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border-2 ${isActive ? 'border-green-500' : 'border-purple-200'}" 
+                             onclick="switchToDraw('${draw.id}')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <h4 class="font-bold text-gray-800 text-lg">${draw.name}</h4>
+                                        ${isActive ? '<span class="text-xs bg-green-500 text-white px-2 py-1 rounded-full">Activo</span>' : ''}
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4 text-sm">
+                                        <div>
+                                            <p class="text-gray-500 text-xs">Participantes</p>
+                                            <p class="font-semibold text-gray-800">${drawParticipants.length}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500 text-xs">Asignados</p>
+                                            <p class="font-semibold text-gray-800">${assignedCount}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500 text-xs">Creado</p>
+                                            <p class="font-semibold text-gray-800">${date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' })}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="event.stopPropagation(); deleteDraw('${draw.id}')" 
+                                        class="text-red-500 hover:text-red-700 ml-4 p-2">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Close view draws modal
+        function closeViewDrawsModal() {
+            const modal = document.getElementById('view-draws-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Generate invite message
+        function generateInviteMessage(participant) {
+            const eventName = document.getElementById('event-name').textContent;
+            const draw = draws.find(d => d.id === currentDrawId);
+            const drawName = draw ? draw.name : 'Intercambio';
+            
+            let message = `🎁 ¡Hola ${participant.name}! 🎁\n\n`;
+            message += `Te invitamos a participar en: ${drawName}\n`;
+            message += `Evento: ${eventName}\n\n`;
+            message += `📱 Para ver tu asignación de regalo, ingresa al portal con estas credenciales:\n\n`;
+            message += `👤 Usuario: ${participant.username}\n`;
+            message += `🔐 Contraseña: ${participant.password}\n\n`;
+            message += `🌐 Portal: TU_URL_PORTAL_PARTICIPANTES_AQUI\n\n`;
+            
+            if (participant.assignedTo) {
+                message += `✅ Tu sorteo ya está listo. ¡Entra al portal para ver a quién le regalarás!\n\n`;
+            } else {
+                message += `⏳ El sorteo se realizará pronto. Te avisaremos cuando esté listo.\n\n`;
+            }
+            
+            message += `💡 Recuerda mantener tu asignación en secreto para mantener la sorpresa.\n\n`;
+            message += `¡Nos vemos en el intercambio! 🎄✨`;
+            
+            return message;
+        }
+
+        // Generate username from name
+        function generateUsername(name) {
+            const cleaned = name.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/\s+/g, '');
+            const random = Math.floor(Math.random() * 999);
+            return cleaned.substring(0, 8) + random;
+        }
+
+        // Generate random password
+        function generatePassword() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let password = '';
+            for (let i = 0; i < 8; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+
+        // Update participant select dropdown
+        function updateParticipantSelect() {
+            const selectElement = document.getElementById('participant-select');
+            const currentValue = selectElement.value;
+            
+            selectElement.innerHTML = '<option value="">-- Selecciona un participante --</option>';
+            
+            participants.forEach(participant => {
+                const option = document.createElement('option');
+                option.value = participant.id;
+                option.textContent = `${participant.name} - ${participant.phone}`;
+                selectElement.appendChild(option);
+            });
+            
+            if (currentValue) {
+                selectElement.value = currentValue;
+            }
+            
+            updateRestrictionSelects();
+        }
+
+        // Update restriction selects
+        function updateRestrictionSelects() {
+            const person1Select = document.getElementById('person1-select');
+            const person2Select = document.getElementById('person2-select');
+            
+            const person1Value = person1Select.value;
+            const person2Value = person2Select.value;
+            
+            person1Select.innerHTML = '<option value="">-- Selecciona --</option>';
+            person2Select.innerHTML = '<option value="">-- Selecciona --</option>';
+            
+            participants.forEach(participant => {
+                const option1 = document.createElement('option');
+                option1.value = participant.id;
+                option1.textContent = participant.name;
+                person1Select.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = participant.id;
+                option2.textContent = participant.name;
+                person2Select.appendChild(option2);
+            });
+            
+            if (person1Value) person1Select.value = person1Value;
+            if (person2Value) person2Select.value = person2Value;
+        }
+
+        // Update restrictions list
+        function updateRestrictionsList() {
+            const container = document.getElementById('restrictions-list');
+            
+            if (restrictions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 text-gray-500 text-sm">
+                        <p>No hay restricciones configuradas</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = restrictions.map(restriction => `
+                <div class="bg-orange-50 rounded-lg p-3 border border-orange-200 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-orange-600">🚫</span>
+                        <span class="text-sm text-gray-800">
+                            <strong>${restriction.person1Name}</strong> ↔️ <strong>${restriction.person2Name}</strong>
+                        </span>
+                        <span class="text-xs text-gray-500">(No pueden regalarse entre sí)</span>
+                    </div>
+                    <button onclick="deleteRestriction('${restriction.id}')" 
+                            class="text-red-500 hover:text-red-700 text-sm">
+                        🗑️
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Delete restriction
+        function deleteRestriction(restrictionId) {
+            restrictions = restrictions.filter(r => r.id !== restrictionId);
+            updateRestrictionsList();
+            showToast("Restricción eliminada.", "success");
+        }
+
+        // Toggle assignment visibility
+        function toggleAssignment(assignmentId) {
+            const assignmentElement = document.getElementById(assignmentId);
+            const participantId = assignmentId.replace('assignment-', '');
+            const eyeIcon = document.getElementById(`eye-icon-${participantId}`);
+            const eyeText = document.getElementById(`eye-text-${participantId}`);
+            
+            if (assignmentElement.classList.contains('hidden')) {
+                assignmentElement.classList.remove('hidden');
+                eyeIcon.textContent = '🙈';
+                eyeText.textContent = 'Ocultar asignación';
+            } else {
+                assignmentElement.classList.add('hidden');
+                eyeIcon.textContent = '👁️';
+                eyeText.textContent = 'Ver asignación';
+            }
+        }
+
+        // Show admin login
+        function showAdminLogin() {
+            document.getElementById('admin-login-section').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            
+            document.getElementById('admin-login-form').reset();
+            document.getElementById('admin-error-message').classList.add('hidden');
+        }
+
+        // Show admin dashboard
+        function showAdminDashboard() {
+            document.getElementById('admin-login-section').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+        }
+
+        // Show admin login error
+        function showAdminLoginError() {
+            const errorDiv = document.getElementById('admin-error-message');
+            const loginForm = document.getElementById('admin-login-form');
+            
+            errorDiv.classList.remove('hidden');
+            loginForm.classList.add('shake-animation');
+            
+            setTimeout(() => {
+                loginForm.classList.remove('shake-animation');
+            }, 500);
+        }
+
+        // Update participants list
+        function updateParticipantsList() {
+            const container = document.getElementById('participants-list');
+            
+            if (!currentDrawId) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <div class="text-6xl mb-4">🎯</div>
+                        <p class="text-lg">Crea o selecciona un sorteo primero</p>
+                        <p class="text-sm">Usa el botón "Crear Nuevo Sorteo" para comenzar</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (participants.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <div class="text-6xl mb-4">👥</div>
+                        <p class="text-lg">No hay participantes registrados aún</p>
+                        <p class="text-sm">Agrega el primer participante usando el formulario de arriba</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = participants.map(participant => `
+                <div class="participant-card bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-3">👤</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${participant.name}</h4>
+                                <p class="text-sm text-gray-600">📱 ${participant.phone}</p>
+                                ${participant.email ? `<p class="text-sm text-gray-600">📧 ${participant.email}</p>` : ''}
+                                <p class="text-xs text-gray-500">Usuario: ${participant.username}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-sm ${participant.assignedTo ? 'text-green-600' : 'text-gray-400'}">
+                                    ${participant.assignedTo ? '✅ Asignado' : '⏳ Pendiente'}
+                                </span>
+                            </div>
+                            ${participant.assignedTo ? `
+                                <div class="mb-2">
+                                    <button onclick="toggleAssignment('assignment-${participant.id}')" 
+                                            class="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1">
+                                        <span id="eye-icon-${participant.id}">👁️</span>
+                                        <span id="eye-text-${participant.id}" class="text-xs">Ver asignación</span>
+                                    </button>
+                                    <p id="assignment-${participant.id}" class="text-xs text-gray-600 mt-1 hidden">
+                                        Regala a: <strong>${participant.assignedTo}</strong>
+                                    </p>
+                                </div>
+                            ` : ''}
+                            <button onclick="deleteParticipant('${participant.__backendId}')" 
+                                    class="text-red-500 hover:text-red-700 text-xs mt-1">
+                                🗑️ Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('total-participants').textContent = participants.length;
+            
+            const assignedCount = participants.filter(p => p.assignedTo).length;
+            document.getElementById('total-assignments').textContent = assignedCount;
+            
+            const status = assignedCount === participants.length && participants.length > 0 ? 'Completado' : 'Pendiente';
+            document.getElementById('draw-status').textContent = status;
+            
+            const drawBtn = document.getElementById('perform-draw-btn');
+            const requirements = document.getElementById('draw-requirements');
+            
+            if (!currentDrawId || participants.length < 2) {
+                drawBtn.disabled = true;
+                drawBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                requirements.classList.remove('hidden');
+            } else {
+                drawBtn.disabled = false;
+                drawBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                requirements.classList.add('hidden');
+            }
+        }
+
+        // Delete participant
+        async function deleteParticipant(backendId) {
+            const participant = allRecords.find(p => p.__backendId === backendId);
+            if (!participant) return;
+            
+            const result = await window.dataSdk.delete(participant);
+            
+            if (result.isOk) {
+                showToast(`Participante ${participant.name} eliminado.`, "success");
+            } else {
+                showToast("Error al eliminar participante.", "error");
+            }
+        }
+
+        // Show credentials modal
+        function showCredentialsModal() {
+            const modal = document.getElementById('credentials-modal');
+            const content = document.getElementById('credentials-content');
+            
+            content.innerHTML = participants.map(participant => `
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div class="grid md:grid-cols-5 gap-4 text-sm">
+                        <div>
+                            <strong class="text-gray-700">Nombre:</strong>
+                            <p class="text-gray-900">${participant.name}</p>
+                        </div>
+                        <div>
+                            <strong class="text-gray-700">Celular:</strong>
+                            <p class="text-gray-900">${participant.phone}</p>
+                        </div>
+                        ${participant.email ? `
+                        <div>
+                            <strong class="text-gray-700">Email:</strong>
+                            <p class="text-gray-900">${participant.email}</p>
+                        </div>
+                        ` : '<div></div>'}
+                        <div>
+                            <strong class="text-gray-700">Usuario:</strong>
+                            <p class="text-gray-900 font-mono bg-white px-2 py-1 rounded">${participant.username}</p>
+                        </div>
+                        <div>
+                            <strong class="text-gray-700">Contraseña:</strong>
+                            <p class="text-gray-900 font-mono bg-white px-2 py-1 rounded">${participant.password}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Close credentials modal
+        function closeCredentialsModal() {
+            const modal = document.getElementById('credentials-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Generate ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Show toast message
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 fade-in ${
+                type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
+                type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
+                'bg-blue-100 text-blue-800 border border-blue-200'
+            }`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Secret Santa draw algorithm with restrictions
+        function performSecretSantaDraw(participantsList, restrictionsList) {
+            const participants = [...participantsList];
+            const n = participants.length;
+            
+            const restricted = new Map();
+            restrictionsList.forEach(restriction => {
+                if (!restricted.has(restriction.person1Id)) {
+                    restricted.set(restriction.person1Id, new Set());
+                }
+                if (!restricted.has(restriction.person2Id)) {
+                    restricted.set(restriction.person2Id, new Set());
+                }
+                restricted.get(restriction.person1Id).add(restriction.person2Id);
+                restricted.get(restriction.person2Id).add(restriction.person1Id);
+            });
+            
+            const maxAttempts = 1000;
+            
+            for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                const receivers = [...participants].sort(() => Math.random() - 0.5);
+                const assignment = {};
+                let valid = true;
+                
+                for (let i = 0; i < n; i++) {
+                    const giver = participants[i];
+                    const receiver = receivers[i];
+                    
+                    if (giver.id === receiver.id) {
+                        valid = false;
+                        break;
+                    }
+                    
+                    if (restricted.has(giver.id) && restricted.get(giver.id).has(receiver.id)) {
+                        valid = false;
+                        break;
+                    }
+                    
+                    assignment[giver.id] = receiver.id;
+                }
+                
+                const receiversCheck = new Set(Object.values(assignment));
+                if (receiversCheck.size !== n) {
+                    valid = false;
+                }
+                
+                if (valid) {
+                    return assignment;
+                }
+            }
+            
+            return null;
+        }
+
+        // Element SDK Configuration
+        async function onConfigChange(config) {
+            document.getElementById('portal-title').textContent = config.portal_title || defaultConfig.portal_title;
+            document.getElementById('event-name').textContent = config.event_name || defaultConfig.event_name;
+            document.getElementById('admin-welcome').textContent = config.admin_welcome || defaultConfig.admin_welcome;
+            document.getElementById('add-participant-text').textContent = config.add_participant_text || defaultConfig.add_participant_text;
+            document.getElementById('draw-button-text').textContent = config.draw_button_text || defaultConfig.draw_button_text;
+            
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const primaryColor = config.primary_color || defaultConfig.primary_color;
+            const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const surfaceColor = config.surface_color || defaultConfig.surface_color;
+            
+            document.body.style.background = `linear-gradient(to bottom right, ${backgroundColor}, #f3e8ff)`;
+            
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`;
+            }
+            
+            const adminCard = document.querySelector('.admin-card');
+            if (adminCard) {
+                adminCard.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+            }
+            
+            const textElements = document.querySelectorAll('h1, h2, h3, h4, p, label');
+            textElements.forEach(el => {
+                if (!el.classList.contains('text-white') && !el.classList.contains('text-gray-300')) {
+                    el.style.color = textColor;
+                }
+            });
+            
+            const surfaces = document.querySelectorAll('.bg-white');
+            surfaces.forEach(surface => {
+                surface.style.backgroundColor = surfaceColor;
+            });
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            config.background_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            config.surface_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ surface_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            config.text_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.primary_color || defaultConfig.primary_color,
+                        set: (value) => {
+                            config.primary_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ primary_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.secondary_color || defaultConfig.secondary_color,
+                        set: (value) => {
+                            config.secondary_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ secondary_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["portal_title", config.portal_title || defaultConfig.portal_title],
+                ["event_name", config.event_name || defaultConfig.event_name],
+                ["admin_welcome", config.admin_welcome || defaultConfig.admin_welcome],
+                ["add_participant_text", config.add_participant_text || defaultConfig.add_participant_text],
+                ["draw_button_text", config.draw_button_text || defaultConfig.draw_button_text]
+            ]);
+        }
+
+        // Initialize SDKs
+        async function initializeApp() {
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+            
+            if (window.dataSdk) {
+                const result = await window.dataSdk.init(dataHandler);
+                if (!result.isOk) {
+                    console.error("Failed to initialize Data SDK");
+                }
+            }
+        }
+
+        initializeApp();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a232c05629fcdcd',t:'MTc2Mzc1OTQwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
