@@ -439,6 +439,17 @@
             }
         }
         
+        .dice-roll {
+            animation: diceRoll 1.5s infinite;
+        }
+        
+        @keyframes diceRoll {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.1); }
+        }
+        
         .admin-card {
             background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             box-shadow: 0 25px 50px rgba(251, 146, 60, 0.5);
@@ -777,7 +788,7 @@
       </div>
       <form id="admin-login-form" class="space-y-4">
        <div><label for="security-code" id="security-code-label" class="block text-sm font-medium mb-2 opacity-90">Código de Seguridad</label> <input type="password" id="security-code" name="security-code" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-white" placeholder="Ingresa el código">
-       </div><button type="submit" id="admin-login-btn" class="w-full bg-white text-orange-600 font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg"> <span class="flex items-center justify-center gap-2"> <span class="text-xl">🔧</span> <span>Acceder al Panel</span> </span> </button>
+       </div><button type="submit" id="admin-login-btn" class="w-full bg-white text-orange-600 font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg"> <span class="flex items-center justify-center gap-2"> <span class="text-xl">🔓</span> <span>Acceder al Panel</span> </span> </button>
       </form><!-- Error Message -->
       <div id="error-message" class="mt-4 p-3 bg-red-500 bg-opacity-20 border border-red-300 border-opacity-30 rounded-lg text-center text-sm hidden"><span class="mr-2">❌</span> <span>Código de seguridad incorrecto.</span>
       </div>
@@ -793,8 +804,6 @@
        </div>
        <p class="text-xs text-gray-500 mt-3">Usa este código para acceder al panel de administración</p>
       </div>
-     </div><!-- Portal Navigation -->
-     <div class="mt-6 text-center"><a href="#" onclick="switchToParticipantPortal()" class="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 transition-colors"> <span class="text-lg">👤</span> <span class="text-sm font-medium">Ir al Portal Participantes</span> </a>
      </div>
     </div>
    </div><!-- Dashboard Section -->
@@ -810,20 +819,7 @@
          <h1 class="text-3xl font-bold">Panel de Administración</h1>
          <p class="text-lg opacity-90">Gestiona participantes y sorteos</p>
         </div>
-       </div><button id="logout-btn" class="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2 text-sm text-white font-semibold"> <span>🚪</span> <span>Salir</span> </span> </button>
-      </div><!-- Portal Navigation -->
-      <div class="mt-4 pt-4 border-t border-white border-opacity-30">
-       <div class="flex justify-center items-center gap-4">
-        <div class="bg-gradient-to-r from-emerald-400 to-green-500 rounded-xl px-4 py-2 border-2 border-white shadow-lg">
-         <div class="flex items-center gap-2 text-sm text-white font-semibold"><span class="text-lg">🔧</span> <span class="font-bold">Portal Administrador</span> <span class="text-xs bg-white text-green-700 px-2 py-0.5 rounded-full">Actual</span>
-         </div>
-        </div>
-        <div class="text-white text-2xl">
-         ✨
-        </div><a href="#" onclick="switchToParticipantPortal()" class="bg-gradient-to-r from-pink-400 to-red-500 hover:from-pink-500 hover:to-red-600 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105">
-         <div class="flex items-center gap-2 text-sm text-white font-semibold"><span class="text-lg">👤</span> <span class="font-bold">Portal Participantes</span>
-         </div></a>
-       </div>
+       </div><button id="logout-btn" class="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2 text-sm text-white font-semibold"> <span class="text-lg">🚪</span> <span>Salir</span> </span> </button>
       </div>
      </div>
     </header><!-- Main Content -->
@@ -857,32 +853,42 @@
          <p class="text-sm opacity-90 mb-1">Estado Sorteo</p>
          <p class="text-lg font-bold" id="draw-status">Sin Sortear</p>
         </div>
-        <div class="text-5xl opacity-80">
+        <div class="text-5xl opacity-80 dice-roll" id="dice-icon">
          🎲
         </div>
        </div>
       </div>
      </div><!-- Action Buttons -->
-     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"><button id="add-participant-btn" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">➕</span> <span class="text-lg">Agregar Participante</span> </span> </button> <button id="draw-btn" class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">🎲</span> <span class="text-lg">Realizar Sorteo</span> </span> </button>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"><button id="add-participant-btn" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">➕</span> <span class="text-lg">Agregar Participante</span> </span> </button> <button id="restrictions-btn" class="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">🚫</span> <span class="text-lg">Restricciones</span> </span> </button> <button id="draw-btn" class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">🎲</span> <span class="text-lg">Realizar Sorteo</span> </span> </button>
      </div><!-- Participants List -->
      <div class="bg-white rounded-xl shadow-lg p-6">
       <div class="flex items-center justify-between mb-6">
        <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">📋</span> <span>Lista de Participantes</span></h3>
+       <div class="flex gap-3"><button id="generate-invitation-btn" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2"> <span class="text-xl">📧</span> <span>Generar Invitación</span> </span> </button> <button id="export-csv-btn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2"> <span class="text-xl">📥</span> <span>Exportar CSV</span> </span> </button>
+       </div>
       </div>
       <div id="participants-list" class="space-y-4"><!-- Participants will be rendered here -->
       </div>
       <div id="empty-state" class="text-center py-12">
        <div class="text-6xl mb-4">
-        📝
+        👥
        </div>
        <h4 class="text-xl font-bold text-gray-700 mb-2">No hay participantes</h4>
        <p class="text-gray-500 mb-6">Comienza agregando el primer participante</p><button onclick="document.getElementById('add-participant-btn').click()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>➕</span> <span>Agregar Participante</span> </span> </button>
       </div>
+     </div><!-- Personal Invitation Display -->
+     <div id="invitation-display" class="hidden bg-white rounded-xl shadow-lg p-6 mt-8">
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">📧</span> <span>Invitación para <span id="participant-name-display" class="text-orange-600"></span></span></h3><button onclick="closeInvitationDisplay()" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
+      </div>
+      <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg p-6 border-2 border-orange-200">
+       <div id="invitation-text" class="text-gray-800 whitespace-pre-wrap font-mono text-sm leading-relaxed"></div>
+      </div><button onclick="copyInvitation()" class="mt-4 w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-2"> <span class="text-xl">📋</span> <span>Copiar Invitación</span> </span> </button>
      </div>
     </main><!-- Footer -->
     <footer class="bg-gray-800 text-white py-6">
      <div class="max-w-6xl mx-auto px-6 text-center">
-      <div class="flex justify-center items-center gap-2 mb-2"><span class="animate-bounce">🔧</span> <span class="animate-pulse">🎄</span> <span class="animate-bounce">⭐</span> <span class="animate-pulse">🎁</span> <span class="animate-bounce">🎉</span>
+      <div class="flex justify-center items-center gap-2 mb-2"><span class="animate-bounce">🎅</span> <span class="animate-pulse">🎄</span> <span class="animate-bounce">⭐</span> <span class="animate-pulse">🎁</span> <span class="animate-bounce">🎉</span>
       </div>
       <p class="text-gray-300">Portal de Administración - Intercambio de Regalos 2025</p>
       <p class="text-xs text-gray-400 mt-1">Sistema de gestión completo</p>
@@ -896,22 +902,163 @@
      <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">👤</span> <span>Nuevo Participante</span></h3><button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
     </div>
     <form id="participant-form" class="space-y-4">
-     <div><label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label> <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Juan Pérez">
+     <div><label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo *</label> <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Juan Pérez">
      </div>
-     <div><label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label> <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan@email.com">
+     <div><label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email (Opcional)</label> <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan@email.com">
      </div>
-     <div><label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label> <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="+51 999 999 999">
+     <div><label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label> <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="+51 999 999 999">
      </div>
-     <div><label for="username" class="block text-sm font-medium text-gray-700 mb-2">Usuario</label> <input type="text" id="username" name="username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan123">
+     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200"><label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="enable-credentials" class="w-4 h-4 text-blue-600 rounded"> <span class="text-sm font-medium text-gray-700">Agregar credenciales de acceso</span> </label>
      </div>
-     <div><label for="password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label> <input type="text" id="password-input" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pass123">
+     <div id="credentials-section" class="hidden space-y-4">
+      <div><label for="username" class="block text-sm font-medium text-gray-700 mb-2">Usuario</label> <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan123">
+      </div>
+      <div><label for="password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label> <input type="text" id="password-input" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pass123">
+      </div>
      </div>
      <div class="flex gap-3 pt-4"><button type="button" id="cancel-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors"> Cancelar </button> <button type="submit" id="save-participant-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>💾</span> <span>Guardar</span> </span> </button>
      </div>
     </form>
    </div>
+  </div><!-- Restrictions Modal -->
+  <div id="restrictions-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4" style="z-index: 1000;">
+   <div class="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl fade-in max-h-screen overflow-y-auto">
+    <div class="flex items-center justify-between mb-6">
+     <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">🚫</span> <span>Restricciones de Sorteo</span></h3><button id="close-restrictions-btn" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
+    </div>
+    <p class="text-sm text-gray-600 mb-4">Define parejas que NO deben regalarse entre sí (ej: hermanos, esposos)</p>
+    <div class="mb-6">
+     <div class="grid grid-cols-2 gap-4 mb-4">
+      <div><label class="block text-sm font-medium text-gray-700 mb-2">Persona 1</label> <select id="restriction-person1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"> <option value="">Seleccionar...</option> </select>
+      </div>
+      <div><label class="block text-sm font-medium text-gray-700 mb-2">Persona 2</label> <select id="restriction-person2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"> <option value="">Seleccionar...</option> </select>
+      </div>
+     </div><button id="add-restriction-btn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>➕</span> <span>Agregar Restricción</span> </span> </button>
+    </div>
+    <div id="restrictions-list" class="space-y-2 mb-6"><!-- Restrictions will appear here -->
+    </div><button id="close-restrictions-modal-btn" class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors"> Cerrar </button>
+   </div>
+  </div><!-- Select Participant Modal -->
+  <div id="select-participant-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4" style="z-index: 1000;">
+   <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl fade-in">
+    <div class="flex items-center justify-between mb-6">
+     <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">📧</span> <span>Seleccionar Participante</span></h3><button id="close-select-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
+    </div>
+    <p class="text-sm text-gray-600 mb-4">Selecciona el participante para generar su invitación personal:</p>
+    <div class="mb-6"><label for="participant-select" class="block text-sm font-medium text-gray-700 mb-2">Participante</label> <select id="participant-select" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">Seleccionar...</option> </select>
+    </div>
+    <div class="flex gap-3"><button id="cancel-select-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors"> Cancelar </button> <button id="confirm-select-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>📧</span> <span>Generar</span> </span> </button>
+    </div>
+   </div>
+  </div><!-- Edit Participant Modal -->
+  <div id="edit-participant-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4" style="z-index: 1000;">
+   <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl fade-in">
+    <div class="flex items-center justify-between mb-6">
+     <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">✏️</span> <span>Editar Participante</span></h3><button id="close-edit-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
+    </div>
+    <form id="edit-participant-form" class="space-y-4"><input type="hidden" id="edit-participant-id" name="edit-participant-id">
+     <div><label for="edit-name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label> <input type="text" id="edit-name" name="edit-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Juan Pérez">
+     </div>
+     <div><label for="edit-email" class="block text-sm font-medium text-gray-700 mb-2">Email</label> <input type="email" id="edit-email" name="edit-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan@email.com">
+     </div>
+     <div><label for="edit-phone" class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label> <input type="tel" id="edit-phone" name="edit-phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="+51 999 999 999">
+     </div>
+     <div><label for="edit-username" class="block text-sm font-medium text-gray-700 mb-2">Usuario</label> <input type="text" id="edit-username" name="edit-username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan123">
+     </div>
+     <div><label for="edit-password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label> <input type="text" id="edit-password-input" name="edit-password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pass123">
+     </div>
+     <div class="flex gap-3 pt-4"><button type="button" id="cancel-edit-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors"> Cancelar </button> <button type="submit" id="update-participant-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>💾</span> <span>Actualizar</span> </span> </button>
+     </div>
+    </form>
+   </div>
   </div>
   <script>
+        // Global variables for restrictions and invite
+        let restrictions = [];
+        let currentInvitationText = '';
+
+        // Toggle assignment visibility
+        function toggleAssignment(backendId) {
+            const textElements = document.querySelectorAll(`.assignment-text.${backendId}`);
+            const hiddenElement = document.querySelector(`.assignment-hidden.${backendId}`);
+            const eyeButton = document.querySelector(`.toggle-eye-${backendId}`);
+            
+            const isHidden = textElements[0].style.display === 'none';
+            
+            textElements.forEach(el => {
+                el.style.display = isHidden ? 'block' : 'none';
+            });
+            
+            if (hiddenElement) {
+                hiddenElement.style.display = isHidden ? 'none' : 'block';
+            }
+            
+            if (eyeButton) {
+                eyeButton.textContent = isHidden ? '🙈' : '👁️';
+            }
+        }
+
+        // Generate personal invite
+        function generatePersonalInvite(participantId) {
+            const participant = participants.find(p => p.id === participantId);
+            if (!participant) return;
+            
+            const inviteText = `🎄 ¡Hola ${participant.name}! 🎁
+
+¡Es hora del intercambio de regalos navideño!
+
+🔑 Tus credenciales de acceso al portal:
+👤 Usuario: ${participant.username}
+🔐 Contraseña: ${participant.password}
+
+🌐 Accede al portal aquí:
+https://sorteocrumer.my.canva.site/particip
+
+✨ ¡Ingresa al portal y descubre a quién le toca regalarle!
+
+¡Prepara un regalo especial! 🌟
+
+📋 Para tu facilidad, aquí están tus credenciales para copiar fácilmente:
+
+${participant.username}
+
+${participant.password}
+
+¡Felices Fiestas! 🎉`;
+            
+            currentInvitationText = inviteText;
+            document.getElementById('participant-name-display').textContent = participant.name;
+            document.getElementById('invitation-text').textContent = inviteText;
+            document.getElementById('invitation-display').classList.remove('hidden');
+            
+            // Scroll to invitation
+            document.getElementById('invitation-display').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Close invitation display
+        function closeInvitationDisplay() {
+            document.getElementById('invitation-display').classList.add('hidden');
+        }
+
+        // Copy invitation to clipboard
+        function copyInvitation() {
+            const textArea = document.createElement('textarea');
+            textArea.value = currentInvitationText;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast("¡Invitación copiada al portapapeles!", "success");
+            } catch (err) {
+                showToast("Error al copiar. Intenta seleccionar manualmente.", "error");
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
         // Configuration
         const defaultConfig = {
             admin_title: "Portal Administrador",
@@ -930,24 +1077,23 @@
         let participants = [];
         let isLoggedIn = false;
         let isDrawing = false;
+        let editingParticipant = null;
 
         // Data SDK Handler
         const dataHandler = {
             onDataChanged(data) {
                 allRecords = data || [];
                 participants = allRecords.filter(r => r.recordType === 'participant');
+                restrictions = allRecords.filter(r => r.recordType === 'restriction');
                 
                 if (isLoggedIn) {
                     updateDashboard();
                     renderParticipantsList();
+                    updateRestrictionsSelects();
+                    renderRestrictionsList();
                 }
             }
         };
-
-        // Portal navigation
-        function switchToParticipantPortal() {
-            window.open('PARTICIPANT_PORTAL_URL', '_blank');
-        }
 
         // Admin login handler
         document.getElementById('admin-login-form').addEventListener('submit', (e) => {
@@ -978,6 +1124,11 @@
             openAddParticipantModal();
         });
 
+        // Restrictions button handler
+        document.getElementById('restrictions-btn').addEventListener('click', () => {
+            openRestrictionsModal();
+        });
+
         // Draw button handler
         document.getElementById('draw-btn').addEventListener('click', async () => {
             if (participants.length < 2) {
@@ -998,7 +1149,46 @@
             }
         });
 
-        // Modal handlers
+        // Export CSV button handler
+        document.getElementById('export-csv-btn').addEventListener('click', () => {
+            exportToCSV();
+        });
+
+        // Generate invitation button handler
+        document.getElementById('generate-invitation-btn').addEventListener('click', () => {
+            if (participants.length === 0) {
+                showToast("No hay participantes disponibles.", "error");
+                return;
+            }
+            openSelectParticipantModal();
+        });
+
+        // Select Participant Modal handlers
+        document.getElementById('close-select-modal-btn').addEventListener('click', () => {
+            closeSelectParticipantModal();
+        });
+
+        document.getElementById('cancel-select-btn').addEventListener('click', () => {
+            closeSelectParticipantModal();
+        });
+
+        document.getElementById('select-participant-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'select-participant-modal') {
+                closeSelectParticipantModal();
+            }
+        });
+
+        document.getElementById('confirm-select-btn').addEventListener('click', () => {
+            const participantId = document.getElementById('participant-select').value;
+            if (!participantId) {
+                showToast("Por favor selecciona un participante.", "error");
+                return;
+            }
+            generatePersonalInvite(participantId);
+            closeSelectParticipantModal();
+        });
+
+        // Add Participant Modal handlers
         document.getElementById('close-modal-btn').addEventListener('click', () => {
             closeAddParticipantModal();
         });
@@ -1013,27 +1203,136 @@
             }
         });
 
+        // Restrictions Modal handlers
+        document.getElementById('close-restrictions-btn').addEventListener('click', () => {
+            closeRestrictionsModal();
+        });
+
+        document.getElementById('close-restrictions-modal-btn').addEventListener('click', () => {
+            closeRestrictionsModal();
+        });
+
+        document.getElementById('restrictions-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'restrictions-modal') {
+                closeRestrictionsModal();
+            }
+        });
+
+        document.getElementById('add-restriction-btn').addEventListener('click', async () => {
+            const person1Id = document.getElementById('restriction-person1').value;
+            const person2Id = document.getElementById('restriction-person2').value;
+            
+            if (!person1Id || !person2Id) {
+                showToast("Por favor selecciona ambas personas.", "error");
+                return;
+            }
+            
+            if (person1Id === person2Id) {
+                showToast("No puedes seleccionar la misma persona dos veces.", "error");
+                return;
+            }
+            
+            // Check if restriction already exists
+            const exists = restrictions.some(r => 
+                (r.person1Id === person1Id && r.person2Id === person2Id) ||
+                (r.person1Id === person2Id && r.person2Id === person1Id)
+            );
+            
+            if (exists) {
+                showToast("Esta restricción ya existe.", "error");
+                return;
+            }
+            
+            // Check record limit
+            if (allRecords.length >= 999) {
+                showToast("Límite de 999 registros alcanzado.", "error");
+                return;
+            }
+            
+            const person1 = participants.find(p => p.id === person1Id);
+            const person2 = participants.find(p => p.id === person2Id);
+            
+            const restrictionData = {
+                id: generateId(),
+                recordType: 'restriction',
+                person1Id: person1Id,
+                person2Id: person2Id,
+                name: `${person1.name} - ${person2.name}`,
+                createdAt: new Date().toISOString(),
+                email: '',
+                phone: '',
+                username: '',
+                password: '',
+                assignedTo: '',
+                assignedToEmail: '',
+                drawId: ''
+            };
+            
+            const result = await window.dataSdk.create(restrictionData);
+            
+            if (result.isOk) {
+                showToast("Restricción agregada exitosamente.", "success");
+                document.getElementById('restriction-person1').value = '';
+                document.getElementById('restriction-person2').value = '';
+            } else {
+                showToast("Error al agregar restricción.", "error");
+            }
+        });
+
+        // Checkbox credential toggle
+        document.getElementById('enable-credentials').addEventListener('change', (e) => {
+            const credentialsSection = document.getElementById('credentials-section');
+            if (e.target.checked) {
+                credentialsSection.classList.remove('hidden');
+                document.getElementById('username').required = true;
+                document.getElementById('password-input').required = true;
+            } else {
+                credentialsSection.classList.add('hidden');
+                document.getElementById('username').required = false;
+                document.getElementById('password-input').required = false;
+            }
+        });
+
+        // Edit Participant Modal handlers
+        document.getElementById('close-edit-modal-btn').addEventListener('click', () => {
+            closeEditParticipantModal();
+        });
+
+        document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+            closeEditParticipantModal();
+        });
+
+        document.getElementById('edit-participant-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'edit-participant-modal') {
+                closeEditParticipantModal();
+            }
+        });
+
         // Participant form handler
         document.getElementById('participant-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const formData = new FormData(e.target);
+            const enableCredentials = document.getElementById('enable-credentials').checked;
+            
             const participantData = {
                 id: generateId(),
                 name: formData.get('name').trim(),
-                email: formData.get('email').trim(),
+                email: formData.get('email').trim() || '',
                 phone: formData.get('phone').trim(),
-                username: formData.get('username').trim(),
-                password: formData.get('password').trim(),
+                username: enableCredentials ? formData.get('username').trim() : '',
+                password: enableCredentials ? formData.get('password').trim() : '',
                 assignedTo: '',
                 assignedToEmail: '',
                 drawId: '',
                 createdAt: new Date().toISOString(),
-                recordType: 'participant'
+                recordType: 'participant',
+                person1Id: '',
+                person2Id: ''
             };
             
-            // Check if username already exists
-            if (participants.some(p => p.username === participantData.username)) {
+            // Check if username already exists (only if credentials are enabled)
+            if (enableCredentials && participantData.username && participants.some(p => p.username === participantData.username)) {
                 showToast("Este nombre de usuario ya está en uso.", "error");
                 return;
             }
@@ -1061,6 +1360,47 @@
                 document.getElementById('participant-form').reset();
             } else {
                 showToast("Error al guardar el participante. Intenta nuevamente.", "error");
+            }
+        });
+
+        // Edit participant form handler
+        document.getElementById('edit-participant-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!editingParticipant) return;
+            
+            const formData = new FormData(e.target);
+            const updatedData = {
+                ...editingParticipant,
+                name: formData.get('edit-name').trim(),
+                email: formData.get('edit-email').trim(),
+                phone: formData.get('edit-phone').trim(),
+                username: formData.get('edit-username').trim(),
+                password: formData.get('edit-password').trim()
+            };
+            
+            // Check if username already exists (excluding current participant)
+            if (participants.some(p => p.username === updatedData.username && p.__backendId !== editingParticipant.__backendId)) {
+                showToast("Este nombre de usuario ya está en uso.", "error");
+                return;
+            }
+            
+            // Show loading state
+            const updateBtn = document.getElementById('update-participant-btn');
+            const originalContent = updateBtn.innerHTML;
+            updateBtn.disabled = true;
+            updateBtn.innerHTML = '<div class="flex items-center justify-center gap-2"><div class="spinner"></div><span>Actualizando...</span></div>';
+            
+            const result = await window.dataSdk.update(updatedData);
+            
+            updateBtn.disabled = false;
+            updateBtn.innerHTML = originalContent;
+            
+            if (result.isOk) {
+                closeEditParticipantModal();
+                showToast("Participante actualizado exitosamente.", "success");
+            } else {
+                showToast("Error al actualizar el participante. Intenta nuevamente.", "error");
             }
         });
 
@@ -1103,14 +1443,17 @@
             document.getElementById('total-assignments').textContent = assignedCount;
             
             const statusElement = document.getElementById('draw-status');
+            const diceIcon = document.getElementById('dice-icon');
             if (assignedCount > 0) {
                 statusElement.textContent = 'Sorteado ✓';
                 statusElement.parentElement.parentElement.classList.remove('from-purple-500', 'to-purple-600');
                 statusElement.parentElement.parentElement.classList.add('from-green-500', 'to-green-600');
+                if (diceIcon) diceIcon.classList.remove('dice-roll');
             } else {
                 statusElement.textContent = 'Sin Sortear';
                 statusElement.parentElement.parentElement.classList.remove('from-green-500', 'to-green-600');
                 statusElement.parentElement.parentElement.classList.add('from-purple-500', 'to-purple-600');
+                if (diceIcon) diceIcon.classList.add('dice-roll');
             }
         }
 
@@ -1143,19 +1486,50 @@
                                 </div>
                                 ${participant.assignedTo ? `
                                     <div class="mt-2 bg-green-50 border border-green-200 rounded-lg p-2">
-                                        <p class="text-xs text-green-700 font-semibold">🎁 Asignado a: ${participant.assignedTo}</p>
-                                        <p class="text-xs text-green-600">${participant.assignedToEmail}</p>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex-1">
+                                                <p class="text-xs text-green-700 font-semibold assignment-text ${participant.__backendId}" style="display:none;">🎁 Asignado a: ${participant.assignedTo}</p>
+                                                <p class="text-xs text-green-600 assignment-text ${participant.__backendId}" style="display:none;">${participant.assignedToEmail || ''}</p>
+                                                <p class="text-xs text-green-700 font-semibold assignment-hidden ${participant.__backendId}">🎁 Asignación oculta</p>
+                                            </div>
+                                            <button onclick="toggleAssignment('${participant.__backendId}')" class="ml-2 text-xl hover:scale-110 transition-transform toggle-eye-${participant.__backendId}">
+                                                👁️
+                                            </button>
+                                        </div>
                                     </div>
                                 ` : ''}
                             </div>
                         </div>
-                        <button onclick="deleteParticipant('${participant.__backendId}')" 
-                                class="bg-red-500 hover:bg-red-600 text-white font-bold p-3 rounded-lg transition-colors ml-4">
-                            <span class="text-xl">🗑️</span>
-                        </button>
+                        <div class="flex items-center gap-2 ml-4">
+                            <button onclick="editParticipant('${participant.__backendId}')" 
+                                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-3 rounded-lg transition-colors">
+                                <span class="text-xl">✏️</span>
+                            </button>
+                            <button onclick="deleteParticipant('${participant.__backendId}')" 
+                                    class="bg-red-500 hover:bg-red-600 text-white font-bold p-3 rounded-lg transition-colors">
+                                <span class="text-xl">🗑️</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Edit participant
+        function editParticipant(backendId) {
+            const participant = participants.find(p => p.__backendId === backendId);
+            if (!participant) return;
+            
+            editingParticipant = participant;
+            
+            document.getElementById('edit-participant-id').value = participant.__backendId;
+            document.getElementById('edit-name').value = participant.name;
+            document.getElementById('edit-email').value = participant.email;
+            document.getElementById('edit-phone').value = participant.phone;
+            document.getElementById('edit-username').value = participant.username;
+            document.getElementById('edit-password-input').value = participant.password;
+            
+            openEditParticipantModal();
         }
 
         // Delete participant
@@ -1178,69 +1552,368 @@
             );
         }
 
-        // Perform draw
+        // Check if assignment violates restrictions
+        function violatesRestrictions(giverId, receiverId) {
+            return restrictions.some(r => 
+                (r.person1Id === giverId && r.person2Id === receiverId) ||
+                (r.person2Id === giverId && r.person1Id === receiverId)
+            );
+        }
+
+        // Generate random credentials
+        function generateUsername(name) {
+            const cleanName = name.toLowerCase().replace(/\s+/g, '');
+            const randomNum = Math.floor(Math.random() * 9000) + 1000;
+            return cleanName.substring(0, 6) + randomNum;
+        }
+
+        function generatePassword() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+            let password = '';
+            for (let i = 0; i < 8; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+
+        // Perform draw with improved algorithm
         async function performDraw() {
-            if (isDrawing) return;
+            if (isDrawing) {
+                showToast("Ya hay un sorteo en progreso. Por favor espera.", "info");
+                return;
+            }
+            
             isDrawing = true;
+            
+            // Show loading state on draw button
+            const drawBtn = document.getElementById('draw-btn');
+            const originalDrawBtnContent = drawBtn.innerHTML;
+            drawBtn.disabled = true;
+            drawBtn.innerHTML = '<span class="flex items-center justify-center gap-3"><div class="spinner"></div><span class="text-lg">Sorteando...</span></span>';
             
             showToast("Realizando sorteo... 🎲", "info");
             
-            // Create shuffled array
-            const shuffled = [...participants];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            
-            // Assign each person to the next one (circular)
-            const drawId = generateId();
-            const updates = [];
-            
-            for (let i = 0; i < participants.length; i++) {
-                const giver = participants[i];
-                const receiver = shuffled[(i + 1) % shuffled.length];
+            try {
+                // Get fresh copy of participants from current data
+                const currentParticipants = [...participants];
                 
-                // Make sure no one is assigned to themselves
-                if (giver.id === receiver.id) {
-                    // Swap with next person
-                    const nextIndex = (i + 2) % shuffled.length;
-                    [shuffled[(i + 1) % shuffled.length], shuffled[nextIndex]] = 
-                    [shuffled[nextIndex], shuffled[(i + 1) % shuffled.length]];
+                // PHASE 1: Ensure ALL participants have credentials BEFORE attempting draw
+                let credentialsNeedUpdate = false;
+                const credentialUpdates = [];
+                
+                for (const participant of currentParticipants) {
+                    if (!participant.username || !participant.password) {
+                        credentialsNeedUpdate = true;
+                        const username = generateUsername(participant.name);
+                        const password = generatePassword();
+                        
+                        // Check if username already exists
+                        let finalUsername = username;
+                        let usernameAttempt = 0;
+                        while (currentParticipants.some(p => p.__backendId !== participant.__backendId && p.username === finalUsername)) {
+                            usernameAttempt++;
+                            finalUsername = username + usernameAttempt;
+                        }
+                        
+                        credentialUpdates.push({
+                            participant: participant,
+                            username: finalUsername,
+                            password: password
+                        });
+                    }
+                }
+                
+                // Apply all credential updates
+                if (credentialsNeedUpdate) {
+                    for (const updateInfo of credentialUpdates) {
+                        const update = {
+                            ...updateInfo.participant,
+                            username: updateInfo.username,
+                            password: updateInfo.password
+                        };
+                        
+                        const result = await window.dataSdk.update(update);
+                        if (!result.isOk) {
+                            throw new Error("Error al generar credenciales");
+                        }
+                    }
                     
-                    const newReceiver = shuffled[(i + 1) % shuffled.length];
-                    updates.push({
-                        ...giver,
-                        assignedTo: newReceiver.name,
-                        assignedToEmail: newReceiver.email,
-                        drawId: drawId
-                    });
-                } else {
-                    updates.push({
-                        ...giver,
-                        assignedTo: receiver.name,
-                        assignedToEmail: receiver.email,
-                        drawId: drawId
-                    });
+                    // Wait for all credential updates to propagate
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    // Refresh participants list after credential updates
+                    const refreshedParticipants = allRecords.filter(r => r.recordType === 'participant');
+                    
+                    // Verify all participants now have credentials
+                    const missingCredentials = refreshedParticipants.filter(p => !p.username || !p.password);
+                    if (missingCredentials.length > 0) {
+                        throw new Error("No se pudieron generar credenciales para todos los participantes");
+                    }
                 }
+                
+                // PHASE 2: Perform the draw using verified participants with credentials
+                const verifiedParticipants = allRecords.filter(r => r.recordType === 'participant');
+                
+                let attempts = 0;
+                const maxAttempts = 10000;
+                let validAssignment = false;
+                let assignments = [];
+                
+                while (!validAssignment && attempts < maxAttempts) {
+                    attempts++;
+                    assignments = [];
+                    
+                    // Create a pool of available receivers for each giver
+                    const availableReceivers = new Map();
+                    verifiedParticipants.forEach(giver => {
+                        const possible = verifiedParticipants.filter(receiver => 
+                            receiver.id !== giver.id && 
+                            !violatesRestrictions(giver.id, receiver.id)
+                        );
+                        availableReceivers.set(giver.id, [...possible]);
+                    });
+                    
+                    // Shuffle the givers order to randomize
+                    const shuffledGivers = [...verifiedParticipants];
+                    for (let i = shuffledGivers.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffledGivers[i], shuffledGivers[j]] = [shuffledGivers[j], shuffledGivers[i]];
+                    }
+                    
+                    const usedReceivers = new Set();
+                    validAssignment = true;
+                    
+                    // Try to assign each giver to an available receiver
+                    for (const giver of shuffledGivers) {
+                        const possible = availableReceivers.get(giver.id).filter(r => !usedReceivers.has(r.id));
+                        
+                        if (possible.length === 0) {
+                            validAssignment = false;
+                            break;
+                        }
+                        
+                        // Randomly select a receiver from available options
+                        const receiver = possible[Math.floor(Math.random() * possible.length)];
+                        usedReceivers.add(receiver.id);
+                        
+                        assignments.push({
+                            giver: giver,
+                            receiver: receiver
+                        });
+                    }
+                    
+                    // Verify all participants are assigned
+                    if (validAssignment && assignments.length !== verifiedParticipants.length) {
+                        validAssignment = false;
+                    }
+                }
+                
+                if (!validAssignment) {
+                    throw new Error("No se pudo realizar el sorteo respetando las restricciones. Intenta modificar las restricciones.");
+                }
+                
+                // PHASE 3: Update all participants with assignments
+                const drawId = generateId();
+                const assignmentUpdates = [];
+                
+                for (const assignment of assignments) {
+                    const update = {
+                        ...assignment.giver,
+                        assignedTo: assignment.receiver.name,
+                        assignedToEmail: assignment.receiver.email,
+                        drawId: drawId
+                    };
+                    
+                    assignmentUpdates.push(update);
+                }
+                
+                // Apply all assignment updates sequentially with error handling
+                for (let i = 0; i < assignmentUpdates.length; i++) {
+                    const update = assignmentUpdates[i];
+                    const result = await window.dataSdk.update(update);
+                    
+                    if (!result.isOk) {
+                        throw new Error(`Error al asignar participante ${i + 1} de ${assignmentUpdates.length}`);
+                    }
+                    
+                    // Small delay between updates to avoid overwhelming the system
+                    if (i < assignmentUpdates.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                }
+                
+                // Wait for final assignment to propagate
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                showToast("¡Sorteo realizado exitosamente! 🎉", "success");
+                
+            } catch (error) {
+                showToast(error.message || "Error al realizar el sorteo. Intenta nuevamente.", "error");
+            } finally {
+                isDrawing = false;
+                drawBtn.disabled = false;
+                drawBtn.innerHTML = originalDrawBtnContent;
+            }
+        }
+
+        // Update restrictions selects
+        function updateRestrictionsSelects() {
+            const select1 = document.getElementById('restriction-person1');
+            const select2 = document.getElementById('restriction-person2');
+            
+            if (!select1 || !select2) return;
+            
+            const currentValue1 = select1.value;
+            const currentValue2 = select2.value;
+            
+            select1.innerHTML = '<option value="">Seleccionar...</option>';
+            select2.innerHTML = '<option value="">Seleccionar...</option>';
+            
+            participants.forEach(p => {
+                const option1 = document.createElement('option');
+                option1.value = p.id;
+                option1.textContent = p.name;
+                select1.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = p.id;
+                option2.textContent = p.name;
+                select2.appendChild(option2);
+            });
+            
+            select1.value = currentValue1;
+            select2.value = currentValue2;
+        }
+
+        // Render restrictions list
+        function renderRestrictionsList() {
+            const listContainer = document.getElementById('restrictions-list');
+            if (!listContainer) return;
+            
+            if (restrictions.length === 0) {
+                listContainer.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">No hay restricciones definidas</p>';
+                return;
             }
             
-            // Update all participants
-            for (const update of updates) {
-                const result = await window.dataSdk.update(update);
-                if (!result.isOk) {
-                    showToast("Error al realizar el sorteo. Intenta nuevamente.", "error");
-                    isDrawing = false;
-                    return;
-                }
+            listContainer.innerHTML = restrictions.map(restriction => {
+                const person1 = participants.find(p => p.id === restriction.person1Id);
+                const person2 = participants.find(p => p.id === restriction.person2Id);
+                
+                if (!person1 || !person2) return '';
+                
+                return `
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-red-600">🚫</span>
+                            <span class="text-sm font-medium text-gray-800">${person1.name} ↔ ${person2.name}</span>
+                        </div>
+                        <button onclick="deleteRestriction('${restriction.__backendId}')" 
+                                class="text-red-500 hover:text-red-700 font-bold">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Delete restriction
+        async function deleteRestriction(backendId) {
+            const restriction = restrictions.find(r => r.__backendId === backendId);
+            if (!restriction) return;
+            
+            const result = await window.dataSdk.delete(restriction);
+            
+            if (result.isOk) {
+                showToast("Restricción eliminada exitosamente.", "success");
+            } else {
+                showToast("Error al eliminar restricción.", "error");
+            }
+        }
+
+        // Open restrictions modal
+        function openRestrictionsModal() {
+            updateRestrictionsSelects();
+            renderRestrictionsList();
+            document.getElementById('restrictions-modal').classList.remove('hidden');
+        }
+
+        // Close restrictions modal
+        function closeRestrictionsModal() {
+            document.getElementById('restrictions-modal').classList.add('hidden');
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            if (participants.length === 0) {
+                showToast("No hay participantes para exportar.", "error");
+                return;
             }
             
-            isDrawing = false;
-            showToast("¡Sorteo realizado exitosamente! 🎉", "success");
+            // CSV headers
+            const headers = ['Nombre', 'Email', 'Teléfono', 'Usuario', 'Contraseña', 'Asignado a', 'Email Asignado'];
+            
+            // CSV rows
+            const rows = participants.map(p => [
+                p.name,
+                p.email,
+                p.phone,
+                p.username,
+                p.password,
+                p.assignedTo || 'Sin asignar',
+                p.assignedToEmail || ''
+            ]);
+            
+            // Create CSV content with BOM for proper encoding
+            let csvContent = '\uFEFF'; // UTF-8 BOM
+            csvContent += headers.join(',') + '\n';
+            rows.forEach(row => {
+                csvContent += row.map(field => `"${field}"`).join(',') + '\n';
+            });
+            
+            // Create download link using data URL
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = `participantes_${new Date().toISOString().split('T')[0]}.csv`;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            
+            // Trigger download with a small delay
+            setTimeout(() => {
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast("CSV exportado exitosamente.", "success");
+            }, 100);
         }
 
         // Check if there are any assignments
         function hasAssignments() {
             return participants.some(p => p.assignedTo);
+        }
+
+        // Open select participant modal
+        function openSelectParticipantModal() {
+            const select = document.getElementById('participant-select');
+            select.innerHTML = '<option value="">Seleccionar...</option>';
+            
+            participants.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.id;
+                option.textContent = p.name;
+                select.appendChild(option);
+            });
+            
+            document.getElementById('select-participant-modal').classList.remove('hidden');
+        }
+
+        // Close select participant modal
+        function closeSelectParticipantModal() {
+            document.getElementById('select-participant-modal').classList.add('hidden');
+            document.getElementById('participant-select').value = '';
         }
 
         // Open add participant modal
@@ -1252,6 +1925,22 @@
         function closeAddParticipantModal() {
             document.getElementById('add-participant-modal').classList.add('hidden');
             document.getElementById('participant-form').reset();
+            document.getElementById('credentials-section').classList.add('hidden');
+            document.getElementById('enable-credentials').checked = false;
+            document.getElementById('username').required = false;
+            document.getElementById('password-input').required = false;
+        }
+
+        // Open edit participant modal
+        function openEditParticipantModal() {
+            document.getElementById('edit-participant-modal').classList.remove('hidden');
+        }
+
+        // Close edit participant modal
+        function closeEditParticipantModal() {
+            document.getElementById('edit-participant-modal').classList.add('hidden');
+            document.getElementById('edit-participant-form').reset();
+            editingParticipant = null;
         }
 
         // Show confirmation modal
@@ -1488,5 +2177,5 @@
 
         initializeApp();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a24d0da44039530',t:'MTc2Mzc3NjY0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a2579fbf0a19519',t:'MTc2Mzc4MzU3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
