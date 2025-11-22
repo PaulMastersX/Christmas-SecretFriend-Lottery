@@ -10,20 +10,402 @@
   <style>
         body {
             box-sizing: border-box;
+            position: relative;
         }
         
-        .admin-animation {
-            animation: adminPulse 3s infinite;
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(194, 65, 12, 0.15) 0%, transparent 100%);
+            z-index: 0;
+            pointer-events: none;
         }
         
-        @keyframes adminPulse {
-            0%, 100% {
-                transform: scale(1) rotate(0deg);
+        .christmas-city {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 35%;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 5%;
+            opacity: 0.3;
+        }
+        
+        .building {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        
+        .building-body {
+            background: linear-gradient(135deg, #92400e 0%, #c2410c 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+        }
+        
+        .building-windows {
+            position: absolute;
+            top: 10%;
+            left: 0;
+            right: 0;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 5px;
+        }
+        
+        .window-row {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .window {
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 1px;
+            box-shadow: 0 0 5px #fbbf24;
+        }
+        
+        .forest {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 25%;
+            z-index: 2;
+            pointer-events: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            opacity: 0.4;
+            padding: 0 2%;
+        }
+        
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 -10px;
+        }
+        
+        .tree-top {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid #065f46;
+            position: relative;
+        }
+        
+        .tree-top::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -20px;
+            width: 40px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+        
+        .tree-middle {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 40px solid #047857;
+            margin-top: -15px;
+            position: relative;
+        }
+        
+        .tree-middle::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -25px;
+            width: 50px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        
+        .tree-bottom {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 45px solid #059669;
+            margin-top: -15px;
+            position: relative;
+        }
+        
+        .tree-bottom::after {
+            content: '';
+            position: absolute;
+            top: 0px;
+            left: -30px;
+            width: 60px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        .tree-trunk {
+            width: 10px;
+            height: 15px;
+            background: #78350f;
+            margin-top: -5px;
+        }
+        
+        .tree.small .tree-top {
+            border-left-width: 12px;
+            border-right-width: 12px;
+            border-bottom-width: 20px;
+        }
+        
+        .tree.small .tree-top::after {
+            width: 24px;
+            left: -12px;
+            height: 8px;
+        }
+        
+        .tree.small .tree-middle {
+            border-left-width: 15px;
+            border-right-width: 15px;
+            border-bottom-width: 25px;
+        }
+        
+        .tree.small .tree-middle::after {
+            width: 30px;
+            left: -15px;
+            height: 6px;
+        }
+        
+        .tree.small .tree-bottom {
+            border-left-width: 18px;
+            border-right-width: 18px;
+            border-bottom-width: 30px;
+        }
+        
+        .tree.small .tree-bottom::after {
+            width: 36px;
+            left: -18px;
+            height: 5px;
+        }
+        
+        .tree.small .tree-trunk {
+            width: 6px;
+            height: 10px;
+        }
+        
+        .tree.large .tree-top {
+            border-left-width: 28px;
+            border-right-width: 28px;
+            border-bottom-width: 50px;
+        }
+        
+        .tree.large .tree-top::after {
+            width: 56px;
+            left: -28px;
+            height: 15px;
+        }
+        
+        .tree.large .tree-middle {
+            border-left-width: 35px;
+            border-right-width: 35px;
+            border-bottom-width: 60px;
+        }
+        
+        .tree.large .tree-middle::after {
+            width: 70px;
+            left: -35px;
+            height: 12px;
+        }
+        
+        .tree.large .tree-bottom {
+            border-left-width: 42px;
+            border-right-width: 42px;
+            border-bottom-width: 70px;
+        }
+        
+        .tree.large .tree-bottom::after {
+            width: 84px;
+            left: -42px;
+            height: 10px;
+        }
+        
+        .tree.large .tree-trunk {
+            width: 14px;
+            height: 20px;
+        }
+        
+        .garland-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            z-index: 3;
+            pointer-events: none;
+            overflow: visible;
+        }
+        
+        .garland-strand {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+        
+        .garland-branch {
+            position: absolute;
+            width: 8px;
+            background: linear-gradient(180deg, #065f46 0%, #047857 50%, #059669 100%);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .garland-branch::before,
+        .garland-branch::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 3px;
+            background: #065f46;
+            border-radius: 2px;
+        }
+        
+        .garland-branch::before {
+            top: 20%;
+            left: -6px;
+            transform: rotate(-30deg);
+        }
+        
+        .garland-branch::after {
+            top: 50%;
+            right: -6px;
+            transform: rotate(30deg);
+        }
+        
+        .light {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        
+        .light::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 8px;
+            background: #1f2937;
+            border-radius: 1px;
+        }
+        
+        .light.red {
+            background: radial-gradient(circle, #fca5a5 0%, #ef4444 100%);
+            box-shadow: 0 0 15px #ef4444, 0 0 5px #ef4444;
+        }
+        
+        .light.yellow {
+            background: radial-gradient(circle, #fde68a 0%, #fbbf24 100%);
+            box-shadow: 0 0 15px #fbbf24, 0 0 5px #fbbf24;
+            animation-delay: 0.5s;
+        }
+        
+        .light.blue {
+            background: radial-gradient(circle, #93c5fd 0%, #3b82f6 100%);
+            box-shadow: 0 0 15px #3b82f6, 0 0 5px #3b82f6;
+            animation-delay: 1s;
+        }
+        
+        .light.green {
+            background: radial-gradient(circle, #6ee7b7 0%, #10b981 100%);
+            box-shadow: 0 0 15px #10b981, 0 0 5px #10b981;
+            animation-delay: 1.5s;
+        }
+        
+        .light.pink {
+            background: radial-gradient(circle, #fbcfe8 0%, #ec4899 100%);
+            box-shadow: 0 0 15px #ec4899, 0 0 5px #ec4899;
+            animation-delay: 0.75s;
+        }
+        
+        .light.orange {
+            background: radial-gradient(circle, #fed7aa 0%, #f97316 100%);
+            box-shadow: 0 0 15px #f97316, 0 0 5px #f97316;
+            animation-delay: 1.25s;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            user-select: none;
+            cursor: default;
+            animation: snowfall linear infinite;
+            color: white;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            pointer-events: none;
+        }
+        
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
             }
-            50% {
-                transform: scale(1.1) rotate(5deg);
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.3;
             }
         }
+        
+        .snowflake:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; font-size: 1.2em; }
+        .snowflake:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; font-size: 0.8em; }
+        .snowflake:nth-child(3) { left: 30%; animation-duration: 12s; animation-delay: 2s; font-size: 1em; }
+        .snowflake:nth-child(4) { left: 40%; animation-duration: 9s; animation-delay: 0.5s; font-size: 1.3em; }
+        .snowflake:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 1.5s; font-size: 0.9em; }
+        .snowflake:nth-child(6) { left: 60%; animation-duration: 10s; animation-delay: 2.5s; font-size: 1.1em; }
+        .snowflake:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 0.8s; font-size: 0.85em; }
+        .snowflake:nth-child(8) { left: 80%; animation-duration: 9s; animation-delay: 1.8s; font-size: 1.2em; }
+        .snowflake:nth-child(9) { left: 90%; animation-duration: 11s; animation-delay: 2.2s; font-size: 0.95em; }
+        .snowflake:nth-child(10) { left: 15%; animation-duration: 12s; animation-delay: 0.3s; font-size: 1em; }
+        .snowflake:nth-child(11) { left: 25%; animation-duration: 10s; animation-delay: 1.2s; font-size: 0.9em; }
+        .snowflake:nth-child(12) { left: 35%; animation-duration: 11s; animation-delay: 2.8s; font-size: 1.15em; }
+        .snowflake:nth-child(13) { left: 45%; animation-duration: 9s; animation-delay: 0.6s; font-size: 0.85em; }
+        .snowflake:nth-child(14) { left: 55%; animation-duration: 13s; animation-delay: 1.9s; font-size: 1.1em; }
+        .snowflake:nth-child(15) { left: 65%; animation-duration: 10s; animation-delay: 2.3s; font-size: 0.95em; }
+        .snowflake:nth-child(16) { left: 75%; animation-duration: 12s; animation-delay: 0.9s; font-size: 1.25em; }
+        .snowflake:nth-child(17) { left: 85%; animation-duration: 11s; animation-delay: 1.6s; font-size: 0.88em; }
+        .snowflake:nth-child(18) { left: 95%; animation-duration: 9s; animation-delay: 2.7s; font-size: 1.05em; }
+        .snowflake:nth-child(19) { left: 5%; animation-duration: 10s; animation-delay: 0.4s; font-size: 0.92em; }
+        .snowflake:nth-child(20) { left: 33%; animation-duration: 13s; animation-delay: 1.4s; font-size: 1.18em; }
         
         .fade-in {
             animation: fadeIn 0.5s ease-in;
@@ -34,1024 +416,675 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .success-animation {
-            animation: successBounce 0.6s ease-in-out;
-        }
-        
-        @keyframes successBounce {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
         .shake-animation {
             animation: shake 0.5s ease-in-out;
         }
         
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
         
-        .loading-spinner {
-            animation: spin 1s linear infinite;
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
         }
         
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(251, 146, 60, 0.8);
+            }
         }
         
         .admin-card {
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            box-shadow: 0 25px 50px rgba(251, 146, 60, 0.5);
         }
         
-        .participant-card {
-            transition: all 0.3s ease;
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
         }
         
-        .participant-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .draw-animation {
-            animation: drawSpin 2s ease-in-out;
-        }
-        
-        @keyframes drawSpin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.1); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .draw-card {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .draw-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-        }
-
-        .draw-card.active {
-            border: 3px solid #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
   <style>@view-transition { navigation: auto; }</style>
  </head>
- <body class="h-full bg-gradient-to-br from-blue-50 to-purple-50 font-sans">
-  <div class="min-h-full flex flex-col"><!-- Admin Login Section -->
-   <div id="admin-login-section" class="min-h-full flex items-center justify-center px-6 py-12">
+ <body class="h-full bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 font-sans relative"><!-- Christmas Garland -->
+  <div class="garland-container">
+   <div class="garland-strand" id="garland-strand"></div>
+  </div><!-- Christmas City Background -->
+  <div class="christmas-city">
+   <div class="building">
+    <div class="text-3xl">
+     ⭐
+    </div>
+    <div class="building-body" style="width: 60px; height: 120px;">
+     <div class="building-windows">
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="building">
+    <div class="text-2xl">
+     🎄
+    </div>
+    <div class="building-body" style="width: 50px; height: 90px;">
+     <div class="building-windows">
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="building">
+    <div class="text-3xl">
+     ✨
+    </div>
+    <div class="building-body" style="width: 70px; height: 140px;">
+     <div class="building-windows">
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="building">
+    <div class="text-2xl">
+     🌟
+    </div>
+    <div class="building-body" style="width: 55px; height: 100px;">
+     <div class="building-windows">
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="building">
+    <div class="text-3xl">
+     🎄
+    </div>
+    <div class="building-body" style="width: 65px; height: 130px;">
+     <div class="building-windows">
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="building">
+    <div class="text-2xl">
+     ⭐
+    </div>
+    <div class="building-body" style="width: 50px; height: 95px;">
+     <div class="building-windows">
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+      <div class="window-row">
+       <div class="window"></div>
+       <div class="window"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Forest Background -->
+  <div class="forest">
+   <div class="tree large">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree small">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree small">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree large">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree small">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree large">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree small">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree large">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree small">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+   <div class="tree small">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="tree-trunk"></div>
+   </div>
+  </div><!-- Snowflakes Animation -->
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="snowflake">
+   ❆
+  </div>
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="snowflake">
+   ❆
+  </div>
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="snowflake">
+   ❆
+  </div>
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="snowflake">
+   ❆
+  </div>
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="snowflake">
+   ❆
+  </div>
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="snowflake">
+   ❆
+  </div>
+  <div class="snowflake">
+   ❄️
+  </div>
+  <div class="snowflake">
+   ❅
+  </div>
+  <div class="min-h-full flex flex-col relative" style="z-index: 10;"><!-- Login Section -->
+   <div id="login-section" class="min-h-full flex items-center justify-center px-6 py-12">
     <div class="max-w-md w-full"><!-- Header -->
      <div class="text-center mb-8">
-      <div class="admin-animation inline-block text-8xl mb-4">
+      <div class="inline-block text-8xl mb-4">
        🔧
       </div>
-      <h1 id="portal-title" class="text-4xl font-bold text-gray-900 mb-2">Portal Administrador</h1>
+      <h1 id="admin-title" class="text-4xl font-bold text-gray-900 mb-2">Portal Administrador</h1>
       <h2 id="event-name" class="text-xl text-gray-600 mb-4">Intercambio Navideño 2025</h2><!-- Decorative elements -->
-      <div class="flex justify-center items-center gap-2 mb-6"><span class="text-2xl animate-pulse">⚙️</span> <span class="text-lg">・</span> <span class="text-2xl animate-bounce">🎯</span> <span class="text-lg">・</span> <span class="text-2xl animate-pulse">📊</span>
+      <div class="flex justify-center items-center gap-2 mb-6"><span class="text-2xl animate-bounce">🎁</span> <span class="text-lg">・</span> <span class="text-2xl animate-pulse">⚙️</span> <span class="text-lg">・</span> <span class="text-2xl animate-bounce">🎄</span>
       </div>
-     </div><!-- Admin Login Card -->
+     </div><!-- Login Card -->
      <div class="admin-card rounded-2xl p-8 text-white shadow-2xl">
       <div class="text-center mb-6">
        <div class="text-5xl mb-4">
-        🛡️
+        🔐
        </div>
-       <h3 class="text-2xl font-bold mb-2">Acceso Administrativo</h3>
-       <p class="text-sm opacity-90">Solo para organizadores autorizados</p>
+       <h3 class="text-2xl font-bold mb-2">Acceso Administrador</h3>
+       <p id="welcome-message" class="text-sm opacity-90">Gestiona tu intercambio de regalos</p>
       </div>
       <form id="admin-login-form" class="space-y-4">
-       <div><label for="admin-username" class="block text-sm font-medium mb-2 opacity-90">Usuario Administrador</label> <input type="text" id="admin-username" name="admin-username" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-white" placeholder="admin">
-       </div>
-       <div><label for="admin-password" class="block text-sm font-medium mb-2 opacity-90">Contraseña Administrador</label> <input type="password" id="admin-password" name="admin-password" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-white" placeholder="Tu contraseña de admin">
-       </div><button type="submit" id="admin-login-btn" class="w-full bg-white text-blue-600 font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg"> <span class="flex items-center justify-center gap-2"> <span class="text-xl">🔐</span> <span>Acceder al Panel Admin</span> </span> </button>
-      </form><!-- Admin Error Message -->
-      <div id="admin-error-message" class="mt-4 p-3 bg-red-500 bg-opacity-20 border border-red-300 border-opacity-30 rounded-lg text-center text-sm hidden"><span class="mr-2">❌</span> <span>Credenciales de administrador incorrectas.</span>
+       <div><label for="security-code" id="security-code-label" class="block text-sm font-medium mb-2 opacity-90">Código de Seguridad</label> <input type="password" id="security-code" name="security-code" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-white" placeholder="Ingresa el código">
+       </div><button type="submit" id="admin-login-btn" class="w-full bg-white text-orange-600 font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg"> <span class="flex items-center justify-center gap-2"> <span class="text-xl">🔧</span> <span>Acceder al Panel</span> </span> </button>
+      </form><!-- Error Message -->
+      <div id="error-message" class="mt-4 p-3 bg-red-500 bg-opacity-20 border border-red-300 border-opacity-30 rounded-lg text-center text-sm hidden"><span class="mr-2">❌</span> <span>Código de seguridad incorrecto.</span>
       </div>
-     </div><!-- Admin Credentials Info -->
+     </div><!-- Security Code Info -->
      <div class="mt-8 bg-white rounded-lg p-6 shadow-md">
       <div class="text-center">
        <div class="text-3xl mb-3">
         🔑
        </div>
-       <h4 class="font-bold text-gray-800 mb-2">Credenciales de Administrador</h4>
-       <div class="bg-gray-50 rounded-lg p-4 mb-3">
-        <p class="text-sm text-gray-700 mb-1"><strong>Usuario:</strong> admin</p>
-        <p class="text-sm text-gray-700"><strong>Contraseña:</strong> Admin123!</p>
+       <h4 class="font-bold text-gray-800 mb-2">Código de Seguridad</h4>
+       <div class="bg-orange-50 rounded-lg p-4 border-2 border-orange-300">
+        <p class="text-2xl font-mono font-bold text-orange-600">ADMIN2025</p>
        </div>
-       <p class="text-xs text-gray-500">Solo para organizadores del evento</p>
+       <p class="text-xs text-gray-500 mt-3">Usa este código para acceder al panel de administración</p>
       </div>
      </div><!-- Portal Navigation -->
-     <div class="mt-6 text-center"><a href="#" onclick="switchToParticipantPortal()" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"> <span class="text-lg">👤</span> <span class="text-sm font-medium">Ir al Portal Participantes</span> </a>
+     <div class="mt-6 text-center"><a href="#" onclick="switchToParticipantPortal()" class="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 transition-colors"> <span class="text-lg">👤</span> <span class="text-sm font-medium">Ir al Portal Participantes</span> </a>
      </div>
     </div>
-   </div><!-- Admin Dashboard -->
-   <div id="admin-dashboard" class="hidden min-h-full flex flex-col"><!-- Header -->
-    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
+   </div><!-- Dashboard Section -->
+   <div id="dashboard-section" class="hidden min-h-full flex flex-col"><!-- Header -->
+    <header class="bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg">
      <div class="max-w-6xl mx-auto px-6 py-6">
       <div class="flex items-center justify-between">
        <div class="flex items-center">
-        <div class="text-4xl mr-4 admin-animation">
+        <div class="text-4xl mr-4">
          🔧
         </div>
         <div>
          <h1 class="text-3xl font-bold">Panel de Administración</h1>
-         <p id="admin-welcome" class="text-lg opacity-90">¡Bienvenido al Panel de Administración!</p>
+         <p class="text-lg opacity-90">Gestiona participantes y sorteos</p>
         </div>
-       </div>
-       <div class="flex items-center gap-4">
-        <div class="text-right">
-         <p class="text-sm opacity-75">Administrador</p>
-         <p class="font-semibold">Sistema Admin</p>
-        </div><button id="admin-logout-btn" class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2 text-sm text-white font-semibold"> <span>🚪</span> <span>Cerrar Sesión</span> </span> </button>
-       </div>
+       </div><button id="logout-btn" class="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center gap-2 text-sm text-white font-semibold"> <span>🚪</span> <span>Salir</span> </span> </button>
       </div><!-- Portal Navigation -->
       <div class="mt-4 pt-4 border-t border-white border-opacity-30">
        <div class="flex justify-center items-center gap-4">
-        <div class="bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl px-4 py-2 border-2 border-white shadow-lg">
+        <div class="bg-gradient-to-r from-emerald-400 to-green-500 rounded-xl px-4 py-2 border-2 border-white shadow-lg">
          <div class="flex items-center gap-2 text-sm text-white font-semibold"><span class="text-lg">🔧</span> <span class="font-bold">Portal Administrador</span> <span class="text-xs bg-white text-green-700 px-2 py-0.5 rounded-full">Actual</span>
          </div>
         </div>
         <div class="text-white text-2xl">
          ✨
-        </div><a href="#" onclick="switchToParticipantPortal()" class="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105">
+        </div><a href="#" onclick="switchToParticipantPortal()" class="bg-gradient-to-r from-pink-400 to-red-500 hover:from-pink-500 hover:to-red-600 rounded-xl px-4 py-2 border-2 border-white shadow-lg transition-all duration-200 transform hover:scale-105">
          <div class="flex items-center gap-2 text-sm text-white font-semibold"><span class="text-lg">👤</span> <span class="font-bold">Portal Participantes</span>
          </div></a>
        </div>
       </div>
      </div>
     </header><!-- Main Content -->
-    <main class="flex-1 max-w-6xl mx-auto px-6 py-8 w-full"><!-- Draw Selector Section -->
-     <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 mb-8 border-2 border-purple-200">
-      <div class="flex items-center justify-between mb-6">
-       <div class="flex items-center"><span class="text-3xl mr-3">🎯</span>
-        <div>
-         <h3 class="text-2xl font-bold text-gray-800">Gestión de Sorteos</h3>
-         <p class="text-sm text-gray-600">Administra múltiples grupos de intercambio</p>
-        </div>
-       </div><button id="create-new-draw-btn" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center gap-2 shadow-lg"> <span class="text-xl">➕</span> <span>Crear Nuevo Sorteo</span> </button>
-      </div><!-- Current Draw Info -->
-      <div id="current-draw-info" class="bg-white rounded-lg p-4 mb-4 border-l-4 border-green-500">
+    <main class="flex-1 max-w-6xl mx-auto px-6 py-8 w-full"><!-- Stats Cards -->
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
        <div class="flex items-center justify-between">
         <div>
-         <p class="text-xs text-gray-500 mb-1">Sorteo Activo:</p>
-         <p id="current-draw-name" class="text-lg font-bold text-gray-800">Sin sorteo seleccionado</p>
-         <p id="current-draw-date" class="text-xs text-gray-500"></p>
-        </div><button id="view-all-draws-btn" class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"> <span>📋</span> <span>Ver Todos los Sorteos</span> </button>
-       </div>
-      </div>
-     </div><!-- Stats Cards -->
-     <div class="grid md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-lg shadow-md p-6 relative overflow-hidden">
-       <div class="absolute top-3 right-6 text-3xl opacity-20">
-        👥
-       </div>
-       <div class="flex items-center"><span class="text-3xl mr-4">👥</span>
-        <div>
-         <h3 class="text-2xl font-bold text-gray-800" id="total-participants">0</h3>
-         <p class="text-sm text-gray-600">Participantes en Sorteo Actual</p>
+         <p class="text-sm opacity-90 mb-1">Total Participantes</p>
+         <p class="text-4xl font-bold" id="total-participants">0</p>
         </div>
-       </div>
-      </div>
-      <div class="bg-white rounded-lg shadow-md p-6 relative overflow-hidden">
-       <div class="absolute top-3 right-6 text-3xl opacity-20">
-        🎯
-       </div>
-       <div class="flex items-center"><span class="text-3xl mr-4">🎯</span>
-        <div>
-         <h3 class="text-2xl font-bold text-gray-800" id="total-assignments">0</h3>
-         <p class="text-sm text-gray-600">Asignaciones Realizadas</p>
-        </div>
-       </div>
-      </div>
-      <div class="bg-white rounded-lg shadow-md p-6 relative overflow-hidden">
-       <div class="absolute top-3 right-6 text-3xl opacity-20">
-        🎁
-       </div>
-       <div class="flex items-center"><span class="text-3xl mr-4">🎁</span>
-        <div>
-         <h3 class="text-2xl font-bold text-gray-800" id="draw-status">Pendiente</h3>
-         <p class="text-sm text-gray-600">Estado del Sorteo</p>
-        </div>
-       </div>
-      </div>
-     </div><!-- Add Participant Section -->
-     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <div class="flex items-center mb-6"><span class="text-3xl mr-3">➕</span>
-       <h3 id="add-participant-text" class="text-2xl font-bold text-gray-800">Agregar Nuevo Participante</h3>
-      </div>
-      <form id="add-participant-form" class="space-y-4">
-       <div class="grid md:grid-cols-2 gap-4">
-        <div><label for="participant-name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo *</label> <input type="text" id="participant-name" name="participant-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ej: María García">
-        </div>
-        <div><label for="participant-phone" class="block text-sm font-medium text-gray-700 mb-2">Celular *</label> <input type="tel" id="participant-phone" name="participant-phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ej: +51 999 999 999">
-        </div>
-        <div><label for="participant-email" class="block text-sm font-medium text-gray-700 mb-2">Email (Opcional)</label> <input type="email" id="participant-email" name="participant-email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="maria@email.com">
-        </div>
-       </div><!-- Custom Credentials Section -->
-       <div class="border-t pt-4">
-        <div class="flex items-center mb-4"><input type="checkbox" id="custom-credentials-checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"> <label for="custom-credentials-checkbox" class="ml-2 text-sm font-medium text-gray-700"> Asignar credenciales personalizadas (Opcional) </label>
-        </div>
-        <div id="custom-credentials-fields" class="grid md:grid-cols-2 gap-4 hidden">
-         <div><label for="participant-username" class="block text-sm font-medium text-gray-700 mb-2">Usuario de Acceso</label> <input type="text" id="participant-username" name="participant-username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="maria123">
-         </div>
-         <div><label for="participant-password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña Temporal</label> <input type="text" id="participant-password" name="participant-password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Abc12345">
-         </div>
-        </div>
-        <p class="text-xs text-gray-500 mt-2">💡 Si no asignas credenciales, se generarán automáticamente basadas en el nombre del participante.</p>
-       </div>
-       <div><button type="submit" id="add-participant-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"> <span class="text-lg">👤</span> <span>Agregar Participante</span>
-         <div id="add-loading" class="loading-spinner w-4 h-4 border-2 border-white border-t-transparent rounded-full hidden ml-2"></div></button>
-       </div>
-      </form>
-     </div><!-- Restrictions Section -->
-     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <div class="flex items-center mb-6"><span class="text-3xl mr-3">🚫</span>
-       <h3 class="text-2xl font-bold text-gray-800">Restricciones de Sorteo</h3>
-      </div>
-      <p class="text-gray-600 mb-4">Agrega restricciones para evitar que ciertos participantes se regalen entre sí (ej: hermanos, esposos, parejas).</p>
-      <form id="add-restriction-form" class="space-y-4">
-       <div class="grid md:grid-cols-2 gap-4">
-        <div><label for="person1-select" class="block text-sm font-medium text-gray-700 mb-2">Primera Persona</label> <select id="person1-select" name="person1-select" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">-- Selecciona --</option> </select>
-        </div>
-        <div><label for="person2-select" class="block text-sm font-medium text-gray-700 mb-2">Segunda Persona</label> <select id="person2-select" name="person2-select" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">-- Selecciona --</option> </select>
-        </div>
-       </div>
-       <div><button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"> <span class="text-lg">➕</span> <span>Agregar Restricción</span> </button>
-       </div>
-      </form><!-- Restrictions List -->
-      <div id="restrictions-list" class="mt-6 space-y-2">
-       <div class="text-center py-6 text-gray-500 text-sm">
-        <p>No hay restricciones configuradas</p>
-       </div>
-      </div>
-     </div><!-- Draw Section -->
-     <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-8 border border-green-200">
-      <div class="text-center">
-       <div class="text-6xl mb-4" id="draw-emoji">
-        🎲
-       </div>
-       <h3 class="text-2xl font-bold text-gray-800 mb-4">Sorteo Automático</h3>
-       <p class="text-gray-600 mb-6">Realiza el sorteo automático para asignar a cada participante la persona a quien debe regalar (asignación 1 a 1).</p><button id="perform-draw-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center gap-3 mx-auto"> <span class="text-2xl">🎯</span> <span id="draw-button-text">Realizar Sorteo Automático</span>
-        <div id="draw-loading" class="loading-spinner w-5 h-5 border-2 border-white border-t-transparent rounded-full hidden ml-2"></div></button>
-       <div id="draw-requirements" class="mt-4 text-sm text-gray-500">
-        <p>⚠️ Se necesitan al menos 2 participantes para realizar el sorteo</p>
-       </div>
-      </div>
-     </div><!-- Participants List -->
-     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <div class="flex items-center justify-between mb-6">
-       <div class="flex items-center"><span class="text-3xl mr-3">📋</span>
-        <h3 class="text-2xl font-bold text-gray-800">Lista de Participantes</h3>
-       </div><button id="generate-credentials-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"> <span>📄</span> <span>Generar Credenciales</span> </button>
-      </div>
-      <div id="participants-list" class="space-y-4">
-       <div class="text-center py-12 text-gray-500">
-        <div class="text-6xl mb-4">
+        <div class="text-5xl opacity-80">
          👥
         </div>
-        <p class="text-lg">No hay participantes registrados aún</p>
-        <p class="text-sm">Agrega el primer participante usando el formulario de arriba</p>
        </div>
       </div>
-     </div><!-- Personal Invite Section -->
-     <div id="personal-invite-section" class="bg-white rounded-lg shadow-md p-6">
-      <div class="flex items-center mb-6"><span class="text-3xl mr-3">📧</span>
-       <h3 class="text-2xl font-bold text-gray-800">Invitación Personal por WhatsApp</h3>
+      <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="text-sm opacity-90 mb-1">Asignaciones</p>
+         <p class="text-4xl font-bold" id="total-assignments">0</p>
+        </div>
+        <div class="text-5xl opacity-80">
+         🎁
+        </div>
+       </div>
       </div>
-      <div class="mb-4"><label for="participant-select" class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Participante:</label> <select id="participant-select" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <option value="">-- Selecciona un participante --</option> </select>
-      </div><button id="generate-invite-btn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2 mb-4"> <span>📱</span> <span>Generar Mensaje de Invitación</span> </button>
-      <div id="invite-message-container" class="hidden"><label class="block text-sm font-medium text-gray-700 mb-2">Mensaje para copiar y enviar por WhatsApp:</label> <textarea id="invite-message-text" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-800 font-mono text-sm resize-none" rows="8"></textarea> <button id="copy-invite-btn" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"> <span>📋</span> <span>Copiar Mensaje</span> </button>
+      <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="text-sm opacity-90 mb-1">Estado Sorteo</p>
+         <p class="text-lg font-bold" id="draw-status">Sin Sortear</p>
+        </div>
+        <div class="text-5xl opacity-80">
+         🎲
+        </div>
+       </div>
+      </div>
+     </div><!-- Action Buttons -->
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"><button id="add-participant-btn" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">➕</span> <span class="text-lg">Agregar Participante</span> </span> </button> <button id="draw-btn" class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"> <span class="flex items-center justify-center gap-3"> <span class="text-2xl">🎲</span> <span class="text-lg">Realizar Sorteo</span> </span> </button>
+     </div><!-- Participants List -->
+     <div class="bg-white rounded-xl shadow-lg p-6">
+      <div class="flex items-center justify-between mb-6">
+       <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">📋</span> <span>Lista de Participantes</span></h3>
+      </div>
+      <div id="participants-list" class="space-y-4"><!-- Participants will be rendered here -->
+      </div>
+      <div id="empty-state" class="text-center py-12">
+       <div class="text-6xl mb-4">
+        📝
+       </div>
+       <h4 class="text-xl font-bold text-gray-700 mb-2">No hay participantes</h4>
+       <p class="text-gray-500 mb-6">Comienza agregando el primer participante</p><button onclick="document.getElementById('add-participant-btn').click()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>➕</span> <span>Agregar Participante</span> </span> </button>
       </div>
      </div>
     </main><!-- Footer -->
     <footer class="bg-gray-800 text-white py-6">
      <div class="max-w-6xl mx-auto px-6 text-center">
-      <div class="flex justify-center items-center gap-2 mb-2"><span class="animate-pulse">🔧</span> <span class="animate-bounce">⚙️</span> <span class="animate-pulse">📊</span> <span class="animate-bounce">🎯</span> <span class="animate-pulse">🎁</span>
+      <div class="flex justify-center items-center gap-2 mb-2"><span class="animate-bounce">🔧</span> <span class="animate-pulse">🎄</span> <span class="animate-bounce">⭐</span> <span class="animate-pulse">🎁</span> <span class="animate-bounce">🎉</span>
       </div>
-      <p class="text-gray-300">Panel de Administración - Intercambio de Regalos 2025</p>
-      <p class="text-xs text-gray-400 mt-1">Sistema Seguro de Gestión</p>
+      <p class="text-gray-300">Portal de Administración - Intercambio de Regalos 2025</p>
+      <p class="text-xs text-gray-400 mt-1">Sistema de gestión completo</p>
      </div>
     </footer>
    </div>
-  </div><!-- Create New Draw Modal -->
-  <div id="create-draw-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-   <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
-    <div class="text-center mb-6">
-     <div class="text-5xl mb-4">
-      🎯
-     </div>
-     <h3 class="text-2xl font-bold text-gray-800 mb-2">Crear Nuevo Sorteo</h3>
-     <p class="text-gray-600">Ingresa un nombre para identificar este grupo</p>
+  </div><!-- Add Participant Modal -->
+  <div id="add-participant-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4" style="z-index: 1000;">
+   <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl fade-in">
+    <div class="flex items-center justify-between mb-6">
+     <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="text-3xl">👤</span> <span>Nuevo Participante</span></h3><button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
     </div>
-    <form id="create-draw-form" class="space-y-4">
-     <div><label for="draw-name" class="block text-sm font-medium text-gray-700 mb-2">Nombre del Sorteo *</label> <input type="text" id="draw-name" name="draw-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Ej: Familia García 2025">
+    <form id="participant-form" class="space-y-4">
+     <div><label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label> <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Juan Pérez">
      </div>
-     <div class="flex gap-3"><button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"> Crear Sorteo </button> <button type="button" onclick="closeCreateDrawModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg transition-colors"> Cancelar </button>
+     <div><label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label> <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan@email.com">
+     </div>
+     <div><label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label> <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="+51 999 999 999">
+     </div>
+     <div><label for="username" class="block text-sm font-medium text-gray-700 mb-2">Usuario</label> <input type="text" id="username" name="username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="juan123">
+     </div>
+     <div><label for="password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label> <input type="text" id="password-input" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pass123">
+     </div>
+     <div class="flex gap-3 pt-4"><button type="button" id="cancel-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors"> Cancelar </button> <button type="submit" id="save-participant-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"> <span class="flex items-center justify-center gap-2"> <span>💾</span> <span>Guardar</span> </span> </button>
      </div>
     </form>
-   </div>
-  </div><!-- View All Draws Modal -->
-  <div id="view-draws-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-   <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-96 overflow-y-auto shadow-2xl">
-    <div class="text-center mb-6">
-     <div class="text-5xl mb-4">
-      📋
-     </div>
-     <h3 class="text-2xl font-bold text-gray-800 mb-2">Historial de Sorteos</h3>
-     <p class="text-gray-600">Selecciona un sorteo para gestionarlo</p>
-    </div>
-    <div id="draws-list" class="space-y-3 mb-6"><!-- Draws will be populated here -->
-    </div>
-    <div class="text-center"><button onclick="closeViewDrawsModal()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors"> Cerrar </button>
-    </div>
-   </div>
-  </div><!-- Credentials Modal -->
-  <div id="credentials-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-   <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-96 overflow-y-auto shadow-2xl">
-    <div class="text-center mb-6">
-     <div class="text-5xl mb-4">
-      📄
-     </div>
-     <h3 class="text-2xl font-bold text-gray-800 mb-2">Credenciales de Acceso</h3>
-     <p class="text-gray-600">Comparte estas credenciales con cada participante</p>
-    </div>
-    <div id="credentials-content" class="space-y-4 mb-6"><!-- Credentials will be populated here -->
-    </div>
-    <div class="text-center"><button onclick="closeCredentialsModal()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors"> Cerrar </button>
-    </div>
    </div>
   </div>
   <script>
         // Configuration
         const defaultConfig = {
-            portal_title: "Portal Administrador - Intercambio de Regalos",
+            admin_title: "Portal Administrador",
             event_name: "Intercambio Navideño 2025",
-            admin_welcome: "¡Bienvenido al Panel de Administración!",
-            add_participant_text: "Agregar Nuevo Participante",
-            draw_button_text: "Realizar Sorteo Automático",
-            background_color: "#eff6ff",
-            primary_color: "#2563eb",
-            secondary_color: "#7c3aed",
+            welcome_message: "Gestiona tu intercambio de regalos",
+            security_code_label: "Código de Seguridad",
+            background_color: "#fffbeb",
+            primary_color: "#fb923c",
+            secondary_color: "#f97316",
             text_color: "#374151",
             surface_color: "#ffffff"
         };
 
-        // Admin credentials
-        const adminCredentials = {
-            username: "admin",
-            password: "Admin123!"
-        };
-
+        const ADMIN_CODE = "ADMIN2025";
         let allRecords = [];
         let participants = [];
-        let draws = [];
-        let currentDrawId = null;
         let isLoggedIn = false;
-        let restrictions = [];
+        let isDrawing = false;
 
         // Data SDK Handler
         const dataHandler = {
             onDataChanged(data) {
                 allRecords = data || [];
+                participants = allRecords.filter(r => r.recordType === 'participant');
                 
-                // Separate participants and draws
-                participants = allRecords.filter(r => r.recordType === 'participant' && (!currentDrawId || r.drawId === currentDrawId));
-                draws = allRecords.filter(r => r.recordType === 'draw');
-                
-                updateDrawsList();
-                updateCurrentDrawInfo();
-                updateParticipantsList();
-                updateStats();
-                updateParticipantSelect();
+                if (isLoggedIn) {
+                    updateDashboard();
+                    renderParticipantsList();
+                }
             }
         };
 
-        // Custom credentials checkbox handler
-        document.getElementById('custom-credentials-checkbox').addEventListener('change', (e) => {
-            const fieldsContainer = document.getElementById('custom-credentials-fields');
-            if (e.target.checked) {
-                fieldsContainer.classList.remove('hidden');
-            } else {
-                fieldsContainer.classList.add('hidden');
-                document.getElementById('participant-username').value = '';
-                document.getElementById('participant-password').value = '';
-            }
-        });
-
         // Portal navigation
         function switchToParticipantPortal() {
-            window.open('TU_URL_PORTAL_PARTICIPANTES_AQUI', '_blank');
+            window.open('PARTICIPANT_PORTAL_URL', '_blank');
         }
 
         // Admin login handler
-        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             
             const formData = new FormData(e.target);
-            const username = formData.get('admin-username').trim();
-            const password = formData.get('admin-password').trim();
+            const code = formData.get('security-code').trim();
             
-            if (username === adminCredentials.username && password === adminCredentials.password) {
+            if (code === ADMIN_CODE) {
                 isLoggedIn = true;
-                showAdminDashboard();
-                showToast("¡Acceso administrativo exitoso!", "success");
+                showDashboard();
+                showToast("¡Bienvenido Administrador!", "success");
             } else {
-                showAdminLoginError();
-                showToast("Credenciales de administrador incorrectas.", "error");
+                showLoginError();
+                showToast("Código de seguridad incorrecto.", "error");
             }
         });
 
-        // Admin logout handler
-        document.getElementById('admin-logout-btn').addEventListener('click', () => {
+        // Logout handler
+        document.getElementById('logout-btn').addEventListener('click', () => {
             isLoggedIn = false;
-            showAdminLogin();
-            showToast("Sesión administrativa cerrada.", "info");
+            showLogin();
+            showToast("Has cerrado sesión.", "info");
         });
 
-        // Create new draw button
-        document.getElementById('create-new-draw-btn').addEventListener('click', () => {
-            showCreateDrawModal();
+        // Add participant button handler
+        document.getElementById('add-participant-btn').addEventListener('click', () => {
+            openAddParticipantModal();
         });
 
-        // View all draws button
-        document.getElementById('view-all-draws-btn').addEventListener('click', () => {
-            showViewDrawsModal();
-        });
-
-        // Create draw form handler
-        document.getElementById('create-draw-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (allRecords.length >= 999) {
-                showToast("Límite máximo de 999 registros alcanzado.", "error");
-                return;
-            }
-            
-            const formData = new FormData(e.target);
-            const drawName = formData.get('draw-name').trim();
-            
-            if (!drawName) {
-                showToast("Debes ingresar un nombre para el sorteo.", "error");
-                return;
-            }
-            
-            const newDraw = {
-                id: generateId(),
-                name: drawName,
-                createdAt: new Date().toISOString(),
-                recordType: 'draw',
-                drawId: '',
-                email: '',
-                phone: '',
-                username: '',
-                password: '',
-                assignedTo: '',
-                assignedToEmail: ''
-            };
-            
-            const result = await window.dataSdk.create(newDraw);
-            
-            if (result.isOk) {
-                currentDrawId = newDraw.id;
-                restrictions = [];
-                closeCreateDrawModal();
-                document.getElementById('create-draw-form').reset();
-                showToast(`Sorteo "${drawName}" creado exitosamente.`, "success");
-            } else {
-                showToast("Error al crear sorteo. Intenta nuevamente.", "error");
-            }
-        });
-
-        // Add participant handler
-        document.getElementById('add-participant-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!currentDrawId) {
-                showToast("Debes crear o seleccionar un sorteo primero.", "error");
-                return;
-            }
-            
-            if (allRecords.length >= 999) {
-                showToast("Límite máximo de 999 registros alcanzado.", "error");
-                return;
-            }
-            
-            const formData = new FormData(e.target);
-            const name = formData.get('participant-name').trim();
-            const phone = formData.get('participant-phone').trim();
-            const email = formData.get('participant-email').trim();
-            const customCredentials = document.getElementById('custom-credentials-checkbox').checked;
-            
-            let username, password;
-            
-            if (customCredentials) {
-                username = formData.get('participant-username').trim();
-                password = formData.get('participant-password').trim();
-                
-                if (!username || !password) {
-                    showToast("Debes ingresar usuario y contraseña si activas credenciales personalizadas.", "error");
-                    return;
-                }
-            } else {
-                username = generateUsername(name);
-                password = generatePassword();
-            }
-            
-            const existingUser = participants.find(p => 
-                p.username === username || (email && p.email === email)
-            );
-            
-            if (existingUser) {
-                showToast("Ya existe un participante con ese usuario o email en este sorteo.", "error");
-                return;
-            }
-            
-            const addBtn = document.getElementById('add-participant-btn');
-            const loading = document.getElementById('add-loading');
-            addBtn.disabled = true;
-            loading.classList.remove('hidden');
-            
-            const participant = {
-                id: generateId(),
-                name,
-                phone,
-                email: email || "",
-                username,
-                password,
-                assignedTo: "",
-                assignedToEmail: "",
-                drawId: currentDrawId,
-                recordType: 'participant',
-                createdAt: new Date().toISOString()
-            };
-            
-            const result = await window.dataSdk.create(participant);
-            
-            addBtn.disabled = false;
-            loading.classList.add('hidden');
-            
-            if (result.isOk) {
-                document.getElementById('add-participant-form').reset();
-                document.getElementById('custom-credentials-checkbox').checked = false;
-                document.getElementById('custom-credentials-fields').classList.add('hidden');
-                showToast(`Participante ${name} agregado exitosamente.`, "success");
-            } else {
-                showToast("Error al agregar participante. Intenta nuevamente.", "error");
-            }
-        });
-
-        // Perform draw handler
-        document.getElementById('perform-draw-btn').addEventListener('click', async () => {
-            if (!currentDrawId) {
-                showToast("Debes crear o seleccionar un sorteo primero.", "error");
-                return;
-            }
-            
+        // Draw button handler
+        document.getElementById('draw-btn').addEventListener('click', async () => {
             if (participants.length < 2) {
-                showToast("Se necesitan al menos 2 participantes para realizar el sorteo.", "error");
+                showToast("Necesitas al menos 2 participantes para realizar el sorteo.", "error");
                 return;
             }
             
-            const drawBtn = document.getElementById('perform-draw-btn');
-            const loading = document.getElementById('draw-loading');
-            const emoji = document.getElementById('draw-emoji');
-            
-            drawBtn.disabled = true;
-            loading.classList.remove('hidden');
-            emoji.classList.add('draw-animation');
-            
-            const assignment = performSecretSantaDraw(participants, restrictions);
-            
-            if (!assignment) {
-                drawBtn.disabled = false;
-                loading.classList.add('hidden');
-                emoji.classList.remove('draw-animation');
-                showToast("No se pudo realizar el sorteo con las restricciones actuales. Intenta eliminar algunas restricciones.", "error");
-                return;
+            if (hasAssignments()) {
+                showConfirmModal(
+                    "¿Realizar nuevo sorteo?",
+                    "Ya existe un sorteo realizado. ¿Deseas crear uno nuevo? Esto eliminará las asignaciones actuales.",
+                    async () => {
+                        await performDraw();
+                    }
+                );
+            } else {
+                await performDraw();
             }
-            
-            for (const [giverId, receiverId] of Object.entries(assignment)) {
-                const giver = participants.find(p => p.id === giverId);
-                const receiver = participants.find(p => p.id === receiverId);
-                
-                if (giver && receiver) {
-                    const updatedParticipant = {
-                        ...giver,
-                        assignedTo: receiver.name,
-                        assignedToEmail: receiver.email
-                    };
-                    
-                    await window.dataSdk.update(updatedParticipant);
-                }
-            }
-            
-            setTimeout(() => {
-                drawBtn.disabled = false;
-                loading.classList.add('hidden');
-                emoji.classList.remove('draw-animation');
-                showToast("¡Sorteo realizado exitosamente! Todas las asignaciones han sido completadas (1 a 1).", "success");
-            }, 2000);
         });
 
-        // Generate credentials handler
-        document.getElementById('generate-credentials-btn').addEventListener('click', () => {
-            if (participants.length === 0) {
-                showToast("No hay participantes para generar credenciales.", "error");
-                return;
+        // Modal handlers
+        document.getElementById('close-modal-btn').addEventListener('click', () => {
+            closeAddParticipantModal();
+        });
+
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            closeAddParticipantModal();
+        });
+
+        document.getElementById('add-participant-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'add-participant-modal') {
+                closeAddParticipantModal();
             }
-            
-            showCredentialsModal();
         });
 
-        // Generate invite handler
-        document.getElementById('generate-invite-btn').addEventListener('click', () => {
-            const selectElement = document.getElementById('participant-select');
-            const selectedId = selectElement.value;
-            
-            if (!selectedId) {
-                showToast("Por favor selecciona un participante.", "error");
-                return;
-            }
-            
-            const participant = participants.find(p => p.id === selectedId);
-            if (!participant) return;
-            
-            const inviteMessage = generateInviteMessage(participant);
-            
-            document.getElementById('invite-message-text').value = inviteMessage;
-            document.getElementById('invite-message-container').classList.remove('hidden');
-            
-            showToast("Mensaje de invitación generado. ¡Cópialo y envíalo por WhatsApp!", "success");
-        });
-
-        // Copy invite handler
-        document.getElementById('copy-invite-btn').addEventListener('click', () => {
-            const textarea = document.getElementById('invite-message-text');
-            textarea.select();
-            document.execCommand('copy');
-            showToast("¡Mensaje copiado al portapapeles!", "success");
-        });
-
-        // Add restriction handler
-        document.getElementById('add-restriction-form').addEventListener('submit', (e) => {
+        // Participant form handler
+        document.getElementById('participant-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const formData = new FormData(e.target);
-            const person1Id = formData.get('person1-select');
-            const person2Id = formData.get('person2-select');
-            
-            if (!person1Id || !person2Id) {
-                showToast("Debes seleccionar ambas personas.", "error");
-                return;
-            }
-            
-            if (person1Id === person2Id) {
-                showToast("No puedes crear una restricción de una persona consigo misma.", "error");
-                return;
-            }
-            
-            const exists = restrictions.some(r => 
-                (r.person1Id === person1Id && r.person2Id === person2Id) ||
-                (r.person1Id === person2Id && r.person2Id === person1Id)
-            );
-            
-            if (exists) {
-                showToast("Esta restricción ya existe.", "error");
-                return;
-            }
-            
-            const person1 = participants.find(p => p.id === person1Id);
-            const person2 = participants.find(p => p.id === person2Id);
-            
-            restrictions.push({
+            const participantData = {
                 id: generateId(),
-                person1Id,
-                person2Id,
-                person1Name: person1.name,
-                person2Name: person2.name
-            });
+                name: formData.get('name').trim(),
+                email: formData.get('email').trim(),
+                phone: formData.get('phone').trim(),
+                username: formData.get('username').trim(),
+                password: formData.get('password').trim(),
+                assignedTo: '',
+                assignedToEmail: '',
+                drawId: '',
+                createdAt: new Date().toISOString(),
+                recordType: 'participant'
+            };
             
-            updateRestrictionsList();
-            e.target.reset();
-            showToast("Restricción agregada exitosamente.", "success");
-        });
-
-        // Switch to draw
-        function switchToDraw(drawId) {
-            currentDrawId = drawId;
-            restrictions = [];
-            
-            participants = allRecords.filter(r => r.recordType === 'participant' && r.drawId === currentDrawId);
-            
-            updateCurrentDrawInfo();
-            updateParticipantsList();
-            updateStats();
-            updateParticipantSelect();
-            
-            closeViewDrawsModal();
-            
-            const draw = draws.find(d => d.id === drawId);
-            showToast(`Sorteo "${draw.name}" seleccionado.`, "success");
-        }
-
-        // Delete draw
-        async function deleteDraw(drawId) {
-            const draw = allRecords.find(r => r.id === drawId);
-            if (!draw) return;
-            
-            const drawParticipants = allRecords.filter(r => r.recordType === 'participant' && r.drawId === drawId);
-            
-            for (const participant of drawParticipants) {
-                await window.dataSdk.delete(participant);
+            // Check if username already exists
+            if (participants.some(p => p.username === participantData.username)) {
+                showToast("Este nombre de usuario ya está en uso.", "error");
+                return;
             }
             
-            const result = await window.dataSdk.delete(draw);
+            // Check record limit
+            if (allRecords.length >= 999) {
+                showToast("Límite de 999 registros alcanzado. Por favor elimina algunos registros primero.", "error");
+                return;
+            }
+            
+            // Show loading state
+            const saveBtn = document.getElementById('save-participant-btn');
+            const originalContent = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<div class="flex items-center justify-center gap-2"><div class="spinner"></div><span>Guardando...</span></div>';
+            
+            const result = await window.dataSdk.create(participantData);
+            
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalContent;
             
             if (result.isOk) {
-                if (currentDrawId === drawId) {
-                    currentDrawId = null;
-                    restrictions = [];
-                }
-                showToast(`Sorteo "${draw.name}" eliminado.`, "success");
+                closeAddParticipantModal();
+                showToast("Participante agregado exitosamente.", "success");
+                document.getElementById('participant-form').reset();
             } else {
-                showToast("Error al eliminar sorteo.", "error");
+                showToast("Error al guardar el participante. Intenta nuevamente.", "error");
             }
-        }
+        });
 
-        // Update draws list
-        function updateDrawsList() {
-            // Draws list is updated in the modal
-        }
-
-        // Update current draw info
-        function updateCurrentDrawInfo() {
-            const nameElement = document.getElementById('current-draw-name');
-            const dateElement = document.getElementById('current-draw-date');
-            
-            if (currentDrawId) {
-                const draw = draws.find(d => d.id === currentDrawId);
-                if (draw) {
-                    nameElement.textContent = draw.name;
-                    const date = new Date(draw.createdAt);
-                    dateElement.textContent = `Creado: ${date.toLocaleDateString('es-ES')} ${date.toLocaleTimeString('es-ES')}`;
-                }
-            } else {
-                nameElement.textContent = "Sin sorteo seleccionado";
-                dateElement.textContent = "";
-            }
-        }
-
-        // Show create draw modal
-        function showCreateDrawModal() {
-            const modal = document.getElementById('create-draw-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Close create draw modal
-        function closeCreateDrawModal() {
-            const modal = document.getElementById('create-draw-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // Show view draws modal
-        function showViewDrawsModal() {
-            const modal = document.getElementById('view-draws-modal');
-            const listContainer = document.getElementById('draws-list');
-            
-            if (draws.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <div class="text-6xl mb-4">🎯</div>
-                        <p class="text-lg">No hay sorteos creados aún</p>
-                        <p class="text-sm">Crea tu primer sorteo para comenzar</p>
-                    </div>
-                `;
-            } else {
-                listContainer.innerHTML = draws.map(draw => {
-                    const drawParticipants = allRecords.filter(r => r.recordType === 'participant' && r.drawId === draw.id);
-                    const assignedCount = drawParticipants.filter(p => p.assignedTo).length;
-                    const isActive = draw.id === currentDrawId;
-                    const date = new Date(draw.createdAt);
-                    
-                    return `
-                        <div class="draw-card ${isActive ? 'active' : ''} bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border-2 ${isActive ? 'border-green-500' : 'border-purple-200'}" 
-                             onclick="switchToDraw('${draw.id}')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <h4 class="font-bold text-gray-800 text-lg">${draw.name}</h4>
-                                        ${isActive ? '<span class="text-xs bg-green-500 text-white px-2 py-1 rounded-full">Activo</span>' : ''}
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 text-sm">
-                                        <div>
-                                            <p class="text-gray-500 text-xs">Participantes</p>
-                                            <p class="font-semibold text-gray-800">${drawParticipants.length}</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-gray-500 text-xs">Asignados</p>
-                                            <p class="font-semibold text-gray-800">${assignedCount}</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-gray-500 text-xs">Creado</p>
-                                            <p class="font-semibold text-gray-800">${date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' })}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button onclick="event.stopPropagation(); deleteDraw('${draw.id}')" 
-                                        class="text-red-500 hover:text-red-700 ml-4 p-2">
-                                    🗑️
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-            
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Close view draws modal
-        function closeViewDrawsModal() {
-            const modal = document.getElementById('view-draws-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // Generate invite message
-        function generateInviteMessage(participant) {
-            const eventName = document.getElementById('event-name').textContent;
-            const draw = draws.find(d => d.id === currentDrawId);
-            const drawName = draw ? draw.name : 'Intercambio';
-            
-            let message = `🎁 ¡Hola ${participant.name}! 🎁\n\n`;
-            message += `Te invitamos a participar en: ${drawName}\n`;
-            message += `Evento: ${eventName}\n\n`;
-            message += `📱 Para ver tu asignación de regalo, ingresa al portal con estas credenciales:\n\n`;
-            message += `👤 Usuario: ${participant.username}\n`;
-            message += `🔐 Contraseña: ${participant.password}\n\n`;
-            message += `🌐 Portal: TU_URL_PORTAL_PARTICIPANTES_AQUI\n\n`;
-            
-            if (participant.assignedTo) {
-                message += `✅ Tu sorteo ya está listo. ¡Entra al portal para ver a quién le regalarás!\n\n`;
-            } else {
-                message += `⏳ El sorteo se realizará pronto. Te avisaremos cuando esté listo.\n\n`;
-            }
-            
-            message += `💡 Recuerda mantener tu asignación en secreto para mantener la sorpresa.\n\n`;
-            message += `¡Nos vemos en el intercambio! 🎄✨`;
-            
-            return message;
-        }
-
-        // Generate username from name
-        function generateUsername(name) {
-            const cleaned = name.toLowerCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                .replace(/\s+/g, '');
-            const random = Math.floor(Math.random() * 999);
-            return cleaned.substring(0, 8) + random;
-        }
-
-        // Generate random password
-        function generatePassword() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let password = '';
-            for (let i = 0; i < 8; i++) {
-                password += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return password;
-        }
-
-        // Update participant select dropdown
-        function updateParticipantSelect() {
-            const selectElement = document.getElementById('participant-select');
-            const currentValue = selectElement.value;
-            
-            selectElement.innerHTML = '<option value="">-- Selecciona un participante --</option>';
-            
-            participants.forEach(participant => {
-                const option = document.createElement('option');
-                option.value = participant.id;
-                option.textContent = `${participant.name} - ${participant.phone}`;
-                selectElement.appendChild(option);
-            });
-            
-            if (currentValue) {
-                selectElement.value = currentValue;
-            }
-            
-            updateRestrictionSelects();
-        }
-
-        // Update restriction selects
-        function updateRestrictionSelects() {
-            const person1Select = document.getElementById('person1-select');
-            const person2Select = document.getElementById('person2-select');
-            
-            const person1Value = person1Select.value;
-            const person2Value = person2Select.value;
-            
-            person1Select.innerHTML = '<option value="">-- Selecciona --</option>';
-            person2Select.innerHTML = '<option value="">-- Selecciona --</option>';
-            
-            participants.forEach(participant => {
-                const option1 = document.createElement('option');
-                option1.value = participant.id;
-                option1.textContent = participant.name;
-                person1Select.appendChild(option1);
-                
-                const option2 = document.createElement('option');
-                option2.value = participant.id;
-                option2.textContent = participant.name;
-                person2Select.appendChild(option2);
-            });
-            
-            if (person1Value) person1Select.value = person1Value;
-            if (person2Value) person2Select.value = person2Value;
-        }
-
-        // Update restrictions list
-        function updateRestrictionsList() {
-            const container = document.getElementById('restrictions-list');
-            
-            if (restrictions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-6 text-gray-500 text-sm">
-                        <p>No hay restricciones configuradas</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = restrictions.map(restriction => `
-                <div class="bg-orange-50 rounded-lg p-3 border border-orange-200 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-orange-600">🚫</span>
-                        <span class="text-sm text-gray-800">
-                            <strong>${restriction.person1Name}</strong> ↔️ <strong>${restriction.person2Name}</strong>
-                        </span>
-                        <span class="text-xs text-gray-500">(No pueden regalarse entre sí)</span>
-                    </div>
-                    <button onclick="deleteRestriction('${restriction.id}')" 
-                            class="text-red-500 hover:text-red-700 text-sm">
-                        🗑️
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        // Delete restriction
-        function deleteRestriction(restrictionId) {
-            restrictions = restrictions.filter(r => r.id !== restrictionId);
-            updateRestrictionsList();
-            showToast("Restricción eliminada.", "success");
-        }
-
-        // Toggle assignment visibility
-        function toggleAssignment(assignmentId) {
-            const assignmentElement = document.getElementById(assignmentId);
-            const participantId = assignmentId.replace('assignment-', '');
-            const eyeIcon = document.getElementById(`eye-icon-${participantId}`);
-            const eyeText = document.getElementById(`eye-text-${participantId}`);
-            
-            if (assignmentElement.classList.contains('hidden')) {
-                assignmentElement.classList.remove('hidden');
-                eyeIcon.textContent = '🙈';
-                eyeText.textContent = 'Ocultar asignación';
-            } else {
-                assignmentElement.classList.add('hidden');
-                eyeIcon.textContent = '👁️';
-                eyeText.textContent = 'Ver asignación';
-            }
-        }
-
-        // Show admin login
-        function showAdminLogin() {
-            document.getElementById('admin-login-section').classList.remove('hidden');
-            document.getElementById('admin-dashboard').classList.add('hidden');
+        // Show login
+        function showLogin() {
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
             
             document.getElementById('admin-login-form').reset();
-            document.getElementById('admin-error-message').classList.add('hidden');
+            document.getElementById('error-message').classList.add('hidden');
         }
 
-        // Show admin dashboard
-        function showAdminDashboard() {
-            document.getElementById('admin-login-section').classList.add('hidden');
-            document.getElementById('admin-dashboard').classList.remove('hidden');
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            
+            updateDashboard();
+            renderParticipantsList();
         }
 
-        // Show admin login error
-        function showAdminLoginError() {
-            const errorDiv = document.getElementById('admin-error-message');
+        // Show login error
+        function showLoginError() {
+            const errorDiv = document.getElementById('error-message');
             const loginForm = document.getElementById('admin-login-form');
             
             errorDiv.classList.remove('hidden');
@@ -1062,158 +1095,206 @@
             }, 500);
         }
 
-        // Update participants list
-        function updateParticipantsList() {
-            const container = document.getElementById('participants-list');
-            
-            if (!currentDrawId) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <div class="text-6xl mb-4">🎯</div>
-                        <p class="text-lg">Crea o selecciona un sorteo primero</p>
-                        <p class="text-sm">Usa el botón "Crear Nuevo Sorteo" para comenzar</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            if (participants.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <div class="text-6xl mb-4">👥</div>
-                        <p class="text-lg">No hay participantes registrados aún</p>
-                        <p class="text-sm">Agrega el primer participante usando el formulario de arriba</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = participants.map(participant => `
-                <div class="participant-card bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <span class="text-2xl mr-3">👤</span>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">${participant.name}</h4>
-                                <p class="text-sm text-gray-600">📱 ${participant.phone}</p>
-                                ${participant.email ? `<p class="text-sm text-gray-600">📧 ${participant.email}</p>` : ''}
-                                <p class="text-xs text-gray-500">Usuario: ${participant.username}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-sm ${participant.assignedTo ? 'text-green-600' : 'text-gray-400'}">
-                                    ${participant.assignedTo ? '✅ Asignado' : '⏳ Pendiente'}
-                                </span>
-                            </div>
-                            ${participant.assignedTo ? `
-                                <div class="mb-2">
-                                    <button onclick="toggleAssignment('assignment-${participant.id}')" 
-                                            class="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1">
-                                        <span id="eye-icon-${participant.id}">👁️</span>
-                                        <span id="eye-text-${participant.id}" class="text-xs">Ver asignación</span>
-                                    </button>
-                                    <p id="assignment-${participant.id}" class="text-xs text-gray-600 mt-1 hidden">
-                                        Regala a: <strong>${participant.assignedTo}</strong>
-                                    </p>
-                                </div>
-                            ` : ''}
-                            <button onclick="deleteParticipant('${participant.__backendId}')" 
-                                    class="text-red-500 hover:text-red-700 text-xs mt-1">
-                                🗑️ Eliminar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Update stats
-        function updateStats() {
+        // Update dashboard stats
+        function updateDashboard() {
             document.getElementById('total-participants').textContent = participants.length;
             
             const assignedCount = participants.filter(p => p.assignedTo).length;
             document.getElementById('total-assignments').textContent = assignedCount;
             
-            const status = assignedCount === participants.length && participants.length > 0 ? 'Completado' : 'Pendiente';
-            document.getElementById('draw-status').textContent = status;
-            
-            const drawBtn = document.getElementById('perform-draw-btn');
-            const requirements = document.getElementById('draw-requirements');
-            
-            if (!currentDrawId || participants.length < 2) {
-                drawBtn.disabled = true;
-                drawBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                requirements.classList.remove('hidden');
+            const statusElement = document.getElementById('draw-status');
+            if (assignedCount > 0) {
+                statusElement.textContent = 'Sorteado ✓';
+                statusElement.parentElement.parentElement.classList.remove('from-purple-500', 'to-purple-600');
+                statusElement.parentElement.parentElement.classList.add('from-green-500', 'to-green-600');
             } else {
-                drawBtn.disabled = false;
-                drawBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                requirements.classList.add('hidden');
+                statusElement.textContent = 'Sin Sortear';
+                statusElement.parentElement.parentElement.classList.remove('from-green-500', 'to-green-600');
+                statusElement.parentElement.parentElement.classList.add('from-purple-500', 'to-purple-600');
             }
+        }
+
+        // Render participants list
+        function renderParticipantsList() {
+            const listContainer = document.getElementById('participants-list');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (participants.length === 0) {
+                listContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            listContainer.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            listContainer.innerHTML = participants.map(participant => `
+                <div class="bg-gradient-to-r from-gray-50 to-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center flex-1">
+                            <div class="text-3xl mr-4">👤</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-gray-800 text-lg">${participant.name}</h4>
+                                <p class="text-sm text-gray-600">${participant.email}</p>
+                                <p class="text-sm text-gray-600">📱 ${participant.phone}</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Usuario: ${participant.username}</span>
+                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">Pass: ${participant.password}</span>
+                                </div>
+                                ${participant.assignedTo ? `
+                                    <div class="mt-2 bg-green-50 border border-green-200 rounded-lg p-2">
+                                        <p class="text-xs text-green-700 font-semibold">🎁 Asignado a: ${participant.assignedTo}</p>
+                                        <p class="text-xs text-green-600">${participant.assignedToEmail}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <button onclick="deleteParticipant('${participant.__backendId}')" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-bold p-3 rounded-lg transition-colors ml-4">
+                            <span class="text-xl">🗑️</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // Delete participant
         async function deleteParticipant(backendId) {
-            const participant = allRecords.find(p => p.__backendId === backendId);
+            const participant = participants.find(p => p.__backendId === backendId);
             if (!participant) return;
             
-            const result = await window.dataSdk.delete(participant);
-            
-            if (result.isOk) {
-                showToast(`Participante ${participant.name} eliminado.`, "success");
-            } else {
-                showToast("Error al eliminar participante.", "error");
-            }
+            showConfirmModal(
+                "¿Eliminar participante?",
+                `¿Estás seguro de eliminar a ${participant.name}? Esta acción no se puede deshacer.`,
+                async () => {
+                    const result = await window.dataSdk.delete(participant);
+                    
+                    if (result.isOk) {
+                        showToast("Participante eliminado exitosamente.", "success");
+                    } else {
+                        showToast("Error al eliminar el participante. Intenta nuevamente.", "error");
+                    }
+                }
+            );
         }
 
-        // Show credentials modal
-        function showCredentialsModal() {
-            const modal = document.getElementById('credentials-modal');
-            const content = document.getElementById('credentials-content');
+        // Perform draw
+        async function performDraw() {
+            if (isDrawing) return;
+            isDrawing = true;
             
-            content.innerHTML = participants.map(participant => `
-                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <div class="grid md:grid-cols-5 gap-4 text-sm">
-                        <div>
-                            <strong class="text-gray-700">Nombre:</strong>
-                            <p class="text-gray-900">${participant.name}</p>
-                        </div>
-                        <div>
-                            <strong class="text-gray-700">Celular:</strong>
-                            <p class="text-gray-900">${participant.phone}</p>
-                        </div>
-                        ${participant.email ? `
-                        <div>
-                            <strong class="text-gray-700">Email:</strong>
-                            <p class="text-gray-900">${participant.email}</p>
-                        </div>
-                        ` : '<div></div>'}
-                        <div>
-                            <strong class="text-gray-700">Usuario:</strong>
-                            <p class="text-gray-900 font-mono bg-white px-2 py-1 rounded">${participant.username}</p>
-                        </div>
-                        <div>
-                            <strong class="text-gray-700">Contraseña:</strong>
-                            <p class="text-gray-900 font-mono bg-white px-2 py-1 rounded">${participant.password}</p>
-                        </div>
+            showToast("Realizando sorteo... 🎲", "info");
+            
+            // Create shuffled array
+            const shuffled = [...participants];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            
+            // Assign each person to the next one (circular)
+            const drawId = generateId();
+            const updates = [];
+            
+            for (let i = 0; i < participants.length; i++) {
+                const giver = participants[i];
+                const receiver = shuffled[(i + 1) % shuffled.length];
+                
+                // Make sure no one is assigned to themselves
+                if (giver.id === receiver.id) {
+                    // Swap with next person
+                    const nextIndex = (i + 2) % shuffled.length;
+                    [shuffled[(i + 1) % shuffled.length], shuffled[nextIndex]] = 
+                    [shuffled[nextIndex], shuffled[(i + 1) % shuffled.length]];
+                    
+                    const newReceiver = shuffled[(i + 1) % shuffled.length];
+                    updates.push({
+                        ...giver,
+                        assignedTo: newReceiver.name,
+                        assignedToEmail: newReceiver.email,
+                        drawId: drawId
+                    });
+                } else {
+                    updates.push({
+                        ...giver,
+                        assignedTo: receiver.name,
+                        assignedToEmail: receiver.email,
+                        drawId: drawId
+                    });
+                }
+            }
+            
+            // Update all participants
+            for (const update of updates) {
+                const result = await window.dataSdk.update(update);
+                if (!result.isOk) {
+                    showToast("Error al realizar el sorteo. Intenta nuevamente.", "error");
+                    isDrawing = false;
+                    return;
+                }
+            }
+            
+            isDrawing = false;
+            showToast("¡Sorteo realizado exitosamente! 🎉", "success");
+        }
+
+        // Check if there are any assignments
+        function hasAssignments() {
+            return participants.some(p => p.assignedTo);
+        }
+
+        // Open add participant modal
+        function openAddParticipantModal() {
+            document.getElementById('add-participant-modal').classList.remove('hidden');
+        }
+
+        // Close add participant modal
+        function closeAddParticipantModal() {
+            document.getElementById('add-participant-modal').classList.add('hidden');
+            document.getElementById('participant-form').reset();
+        }
+
+        // Show confirmation modal
+        function showConfirmModal(title, message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4';
+            modal.style.zIndex = '2000';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl fade-in">
+                    <div class="text-center mb-6">
+                        <div class="text-5xl mb-4">⚠️</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">${title}</h3>
+                        <p class="text-gray-600">${message}</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="modal-cancel" 
+                                class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition-colors">
+                            Cancelar
+                        </button>
+                        <button id="modal-confirm" 
+                                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                            Confirmar
+                        </button>
                     </div>
                 </div>
-            `).join('');
+            `;
             
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Close credentials modal
-        function closeCredentialsModal() {
-            const modal = document.getElementById('credentials-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // Generate ID
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            document.body.appendChild(modal);
+            
+            modal.querySelector('#modal-cancel').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modal.querySelector('#modal-confirm').addEventListener('click', () => {
+                modal.remove();
+                onConfirm();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
         }
 
         // Show toast message
@@ -1224,6 +1305,7 @@
                 type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
                 'bg-blue-100 text-blue-800 border border-blue-200'
             }`;
+            toast.style.zIndex = '3000';
             toast.textContent = message;
             
             document.body.appendChild(toast);
@@ -1233,67 +1315,54 @@
             }, 4000);
         }
 
-        // Secret Santa draw algorithm with restrictions
-        function performSecretSantaDraw(participantsList, restrictionsList) {
-            const participants = [...participantsList];
-            const n = participants.length;
+        // Generate unique ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Create sinusoidal garland
+        function createGarland() {
+            const garlandStrand = document.getElementById('garland-strand');
+            garlandStrand.innerHTML = '';
+            const width = window.innerWidth;
+            const numBranches = Math.floor(width / 25);
+            const amplitude = 45;
+            const frequency = 3;
             
-            const restricted = new Map();
-            restrictionsList.forEach(restriction => {
-                if (!restricted.has(restriction.person1Id)) {
-                    restricted.set(restriction.person1Id, new Set());
-                }
-                if (!restricted.has(restriction.person2Id)) {
-                    restricted.set(restriction.person2Id, new Set());
-                }
-                restricted.get(restriction.person1Id).add(restriction.person2Id);
-                restricted.get(restriction.person2Id).add(restriction.person1Id);
-            });
+            const colors = ['red', 'yellow', 'blue', 'green', 'pink', 'orange'];
             
-            const maxAttempts = 1000;
-            
-            for (let attempt = 0; attempt < maxAttempts; attempt++) {
-                const receivers = [...participants].sort(() => Math.random() - 0.5);
-                const assignment = {};
-                let valid = true;
+            for (let i = 0; i < numBranches; i++) {
+                const x = (i / numBranches) * width;
+                const normalizedX = (i / numBranches) * Math.PI * 2 * frequency;
+                const y = Math.sin(normalizedX) * amplitude + amplitude + 20;
                 
-                for (let i = 0; i < n; i++) {
-                    const giver = participants[i];
-                    const receiver = receivers[i];
-                    
-                    if (giver.id === receiver.id) {
-                        valid = false;
-                        break;
-                    }
-                    
-                    if (restricted.has(giver.id) && restricted.get(giver.id).has(receiver.id)) {
-                        valid = false;
-                        break;
-                    }
-                    
-                    assignment[giver.id] = receiver.id;
-                }
+                const branch = document.createElement('div');
+                branch.className = 'garland-branch';
+                branch.style.left = `${x}px`;
+                branch.style.top = `${y}px`;
+                branch.style.height = `${15 + Math.random() * 10}px`;
+                branch.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
                 
-                const receiversCheck = new Set(Object.values(assignment));
-                if (receiversCheck.size !== n) {
-                    valid = false;
-                }
+                garlandStrand.appendChild(branch);
                 
-                if (valid) {
-                    return assignment;
+                if (i % 2 === 0) {
+                    const light = document.createElement('div');
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    light.className = `light ${randomColor}`;
+                    light.style.left = `${x}px`;
+                    light.style.top = `${y + 22}px`;
+                    
+                    garlandStrand.appendChild(light);
                 }
             }
-            
-            return null;
         }
 
         // Element SDK Configuration
         async function onConfigChange(config) {
-            document.getElementById('portal-title').textContent = config.portal_title || defaultConfig.portal_title;
+            document.getElementById('admin-title').textContent = config.admin_title || defaultConfig.admin_title;
             document.getElementById('event-name').textContent = config.event_name || defaultConfig.event_name;
-            document.getElementById('admin-welcome').textContent = config.admin_welcome || defaultConfig.admin_welcome;
-            document.getElementById('add-participant-text').textContent = config.add_participant_text || defaultConfig.add_participant_text;
-            document.getElementById('draw-button-text').textContent = config.draw_button_text || defaultConfig.draw_button_text;
+            document.getElementById('welcome-message').textContent = config.welcome_message || defaultConfig.welcome_message;
+            document.getElementById('security-code-label').textContent = config.security_code_label || defaultConfig.security_code_label;
             
             const backgroundColor = config.background_color || defaultConfig.background_color;
             const primaryColor = config.primary_color || defaultConfig.primary_color;
@@ -1301,7 +1370,7 @@
             const textColor = config.text_color || defaultConfig.text_color;
             const surfaceColor = config.surface_color || defaultConfig.surface_color;
             
-            document.body.style.background = `linear-gradient(to bottom right, ${backgroundColor}, #f3e8ff)`;
+            document.body.style.background = `linear-gradient(to bottom right, ${backgroundColor}, #fef3c7)`;
             
             const header = document.querySelector('header');
             if (header) {
@@ -1383,16 +1452,17 @@
 
         function mapToEditPanelValues(config) {
             return new Map([
-                ["portal_title", config.portal_title || defaultConfig.portal_title],
+                ["admin_title", config.admin_title || defaultConfig.admin_title],
                 ["event_name", config.event_name || defaultConfig.event_name],
-                ["admin_welcome", config.admin_welcome || defaultConfig.admin_welcome],
-                ["add_participant_text", config.add_participant_text || defaultConfig.add_participant_text],
-                ["draw_button_text", config.draw_button_text || defaultConfig.draw_button_text]
+                ["welcome_message", config.welcome_message || defaultConfig.welcome_message],
+                ["security_code_label", config.security_code_label || defaultConfig.security_code_label]
             ]);
         }
 
         // Initialize SDKs
         async function initializeApp() {
+            createGarland();
+            
             if (window.elementSdk) {
                 window.elementSdk.init({
                     defaultConfig,
@@ -1409,8 +1479,14 @@
                 }
             }
         }
+        
+        window.addEventListener('resize', () => {
+            const garlandStrand = document.getElementById('garland-strand');
+            garlandStrand.innerHTML = '';
+            createGarland();
+        });
 
         initializeApp();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a232c05629fcdcd',t:'MTc2Mzc1OTQwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a24d0da44039530',t:'MTc2Mzc3NjY0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
